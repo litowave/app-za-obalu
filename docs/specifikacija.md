@@ -105,7 +105,7 @@ Izleti brodom i beach barovi za sada nisu u ponudi.
 
 Pri dodavanju ponude iznajmljivač bira gotov predložak, koji popuni naziv, način najma i uobičajeno numeriranje. Sve se može promijeniti.
 
-| Predložak | Način najma | Zadano numeriranje |
+| Predložak | Način najma | Predložene oznake (mogu se promijeniti) |
 |---|---|---|
 | Ležaljka | dan / pola dana | L1, L2... |
 | Komplet (2 ležaljke + 1 suncobran) | dan / pola dana | K1, K2... |
@@ -120,7 +120,7 @@ Pri dodavanju ponude iznajmljivač bira gotov predložak, koji popuni naziv, na�
 | Aquapark ulaznica | dan | bez jedinica, broji se kapacitet |
 | Vlastito | po izboru | po izboru |
 
-**Komplet** (suncobran i dvije ležaljke) je zaseban proizvod s vlastitim oznakama (K1, K2...). Pojedinačne ležaljke koje objekt nudi uz komplete drugi su proizvod (L1, L2...). To su fizički različiti predmeti, pa prodaja kompleta ne smanjuje broj slobodnih pojedinačnih ležaljki i obrnuto.
+**Komplet** (suncobran i dvije ležaljke) je zaseban proizvod s vlastitim oznakama (K1, K2...). Pojedinačne ležaljke koje objekt nudi uz komplete drugi su proizvod (L1, L2...). Oznake su samo prijedlog: iznajmljivač može odmah upisati svoj prefiks ili način numeriranja, a kasnije preimenovati i svaku jedinicu posebno. To su fizički različiti predmeti, pa prodaja kompleta ne smanjuje broj slobodnih pojedinačnih ležaljki i obrnuto.
 
 ## 4. Aplikacija za iznajmljivače
 
