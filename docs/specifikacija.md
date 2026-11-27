@@ -356,7 +356,7 @@ Datumi su okvirni i ovise o tome koliko vremena imaš za pregled i testiranje.
 - Dugoročno: **integracija s POS uređajem**. Jedan dodir na terminalu bi izdao fiskalni račun i označio jedinicu, pa iznajmljivač ne radi dvaput isto. Tada se aplikacija prodaje kao paket uz uslugu pružatelja POS-a. Zato baza od početka ima jasno odvojene funkcije za bilježenje prodaje, koje kasnije može pozivati i POS, a ne samo naša aplikacija.
 
 ### 9.3 Kasnije
-- Integracija s POS uređajima i fiskalizacijom
+- Integracija s POS uređajima i fiskalizacijom (prvi kandidat: Teya)
 - Podaci uživo iz automata za najam
 - Ručna razina gužve za aquaparkove
 - Raspored jedinica kao tlocrt plaže (redovi, prvi red uz more) umjesto mreže
@@ -384,6 +384,7 @@ Datumi su okvirni i ovise o tome koliko vremena imaš za pregled i testiranje.
 | Komplet i ležaljke | Dva odvojena proizvoda: komplet (suncobran + 2 ležaljke) i pojedinačne ležaljke, ne dijele zalihu. |
 | Automati za najam | Tek dolaze u Hrvatsku, partner još nije poznat. U prvoj verziji su na karti kao obični objekti bez gužve uživo; povezivanje s uređajima kad se pojavi konkretan proizvođač. |
 | Dijelovi dana | Podesivo po vrsti predmeta. Primošten Cabana: cijeli dan i 1. polovica (9 do 15 h) mogu se rezervirati, 2. polovica (15 h do zalaska) samo na licu mjesta. Ležaljke samo cijeli dan. |
+| POS | Kandidat za kasniju integraciju je Teya (već je koristiš). Nije dio prve verzije. |
 | Domena | `litowave.hr` i `litowave.com` već postoje; QR kodovi vode na `litowave.hr/q/{kod}`. |
 | Poslovni model | Zimsko testiranje, zatim 100 € za sezonu, dugoročno integracija s POS-om. |
 
@@ -422,4 +423,4 @@ Domene drži na automatskom produženju: ako `litowave.hr` istekne, svi tiskani 
 
 ### 10.3 Otvoreno
 
-11. **POS.** Imaš li na umu određenog pružatelja POS uređaja za kasniju integraciju?
+Trenutačno nema otvorenih pitanja.
