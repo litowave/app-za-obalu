@@ -17,10 +17,11 @@
   --lito-pressed-text: #4f6563;
   --lito-focus: #6fb3ae;
 
-  --lito-crowd-unknown: #c9d6d4;
-  --lito-crowd-low: #8cc5bf;
-  --lito-crowd-medium: #5fa8a3;
-  --lito-crowd-high: #2f6e6a;
+  --lito-crowd-no_data: #c9d6d4;
+  --lito-crowd-empty: #b5ddd7;
+  --lito-crowd-few: #8cc5bf;
+  --lito-crowd-moderate: #5fa8a3;
+  --lito-crowd-busy: #2f6e6a;
   --lito-crowd-full: #1f4f4b;
 
   --lito-font-heading: "Poppins", ui-rounded, "Segoe UI", system-ui, sans-serif;

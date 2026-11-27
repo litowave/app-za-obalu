@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { contrastRatio } from "./contrast";
-import { color, sun, unitState } from "./tokens";
+import { color, crowd, sun, unitState } from "./tokens";
 
 describe("kontrast teksta", () => {
   const pairs: [string, string, string][] = [
@@ -37,5 +37,19 @@ describe("stanja mjesta", () => {
     expect(unitState.reserved.background).toBe(unitState.free.background);
     expect(unitState.reserved.icon).toBe("clock");
     expect(unitState.free.icon).toBe("none");
+  });
+});
+
+describe("gužva", () => {
+  it("ima šest razina, sve tamnije od praznog prema punom", () => {
+    const order = ["empty", "few", "moderate", "busy", "full"] as const;
+    expect(Object.keys(crowd)).toEqual(["no_data", ...order]);
+    for (let i = 1; i < order.length; i++) {
+      const prev = order[i - 1] as (typeof order)[number];
+      const cur = order[i] as (typeof order)[number];
+      expect(contrastRatio(crowd[cur], "#FFFFFF")).toBeGreaterThan(
+        contrastRatio(crowd[prev], "#FFFFFF"),
+      );
+    }
   });
 });

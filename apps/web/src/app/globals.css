@@ -6,10 +6,6 @@
   --muted: var(--lito-text-muted);
   --card: var(--lito-surface);
   --sea: var(--lito-link);
-  --low: var(--lito-crowd-low);
-  --medium: var(--lito-crowd-medium);
-  --high: var(--lito-crowd-high);
-  --full: var(--lito-crowd-full);
 }
 
 * {
@@ -77,17 +73,23 @@ h1 {
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: var(--lito-crowd-unknown);
+  background: var(--lito-crowd-no_data);
 }
-.crowd-low::before {
-  background: var(--low);
+.crowd-no_data::before {
+  background: var(--lito-crowd-no_data);
 }
-.crowd-medium::before {
-  background: var(--medium);
+.crowd-empty::before {
+  background: var(--lito-crowd-empty);
 }
-.crowd-high::before {
-  background: var(--high);
+.crowd-few::before {
+  background: var(--lito-crowd-few);
+}
+.crowd-moderate::before {
+  background: var(--lito-crowd-moderate);
+}
+.crowd-busy::before {
+  background: var(--lito-crowd-busy);
 }
 .crowd-full::before {
-  background: var(--full);
+  background: var(--lito-crowd-full);
 }

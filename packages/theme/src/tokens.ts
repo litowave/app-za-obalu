@@ -61,10 +61,11 @@ export const unitState: Record<
 
 /** Gužva za turiste: ista boja, sve tamnija. Uz boju uvijek ide i tekst razine. */
 export const crowd: Record<CrowdLevel, string> = {
-  unknown: "#C9D6D4",
-  low: "#8CC5BF",
-  medium: "#5FA8A3",
-  high: "#2F6E6A",
+  no_data: "#C9D6D4",
+  empty: "#B5DDD7",
+  few: "#8CC5BF",
+  moderate: "#5FA8A3",
+  busy: "#2F6E6A",
   full: "#1F4F4B",
 };
 
