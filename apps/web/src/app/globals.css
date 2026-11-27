@@ -73,18 +73,19 @@ h1 {
   font-weight: 600;
   white-space: nowrap;
 }
-.crowd-low {
+.crowd-empty,
+.crowd-few {
   color: var(--low);
 }
-.crowd-medium {
+.crowd-moderate {
   color: var(--medium);
 }
-.crowd-high {
+.crowd-busy {
   color: var(--high);
 }
 .crowd-full {
   color: var(--full);
 }
-.crowd-unknown {
+.crowd-no_data {
   color: var(--muted);
 }
