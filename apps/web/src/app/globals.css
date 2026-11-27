@@ -1,23 +1,11 @@
-:root {
-  --bg: #f6f8f9;
-  --fg: #0f1f2a;
-  --muted: #5b6b76;
-  --card: #ffffff;
-  --sea: #0a6c8f;
-  --low: #1f8a5b;
-  --medium: #b7791f;
-  --high: #c2410c;
-  --full: #9f1239;
-  color-scheme: light dark;
-}
+@import "@obala/theme/tokens.css";
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #0b141a;
-    --fg: #e6eef2;
-    --muted: #93a4ae;
-    --card: #13212a;
-  }
+:root {
+  --bg: var(--lito-bg);
+  --fg: var(--lito-text);
+  --muted: var(--lito-text-muted);
+  --card: var(--lito-surface);
+  --sea: var(--lito-link);
 }
 
 * {
@@ -28,7 +16,7 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--fg);
-  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-family: var(--lito-font-body);
 }
 
 .page {
@@ -37,6 +25,7 @@ body {
   padding: 32px 16px;
 }
 h1 {
+  font-family: var(--lito-font-heading);
   margin: 0 0 8px;
   font-size: 1.75rem;
 }
@@ -59,6 +48,7 @@ h1 {
   padding: 14px 16px;
   border-radius: 14px;
   background: var(--card);
+  border: 1px solid var(--lito-border);
 }
 .card div {
   display: grid;
@@ -69,23 +59,37 @@ h1 {
   font-size: 0.875rem;
 }
 .crowd {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   font-size: 0.8125rem;
   font-weight: 600;
   white-space: nowrap;
+  color: var(--fg);
 }
-.crowd-empty,
-.crowd-few {
-  color: var(--low);
+/* Boja razine je točka; tekst ostaje tamni radi čitljivosti. */
+.crowd::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--lito-crowd-no_data);
 }
-.crowd-moderate {
-  color: var(--medium);
+.crowd-no_data::before {
+  background: var(--lito-crowd-no_data);
 }
-.crowd-busy {
-  color: var(--high);
+.crowd-empty::before {
+  background: var(--lito-crowd-empty);
 }
-.crowd-full {
-  color: var(--full);
+.crowd-few::before {
+  background: var(--lito-crowd-few);
 }
-.crowd-no_data {
-  color: var(--muted);
+.crowd-moderate::before {
+  background: var(--lito-crowd-moderate);
+}
+.crowd-busy::before {
+  background: var(--lito-crowd-busy);
+}
+.crowd-full::before {
+  background: var(--lito-crowd-full);
 }

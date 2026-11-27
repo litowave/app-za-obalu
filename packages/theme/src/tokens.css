@@ -1,0 +1,99 @@
+/* Lito tema za web (turistička stranica i web panel). Vrijednosti su iste kao u tokens.ts. */
+:root {
+  color-scheme: light;
+  --lito-bg: #ffffff;
+  --lito-surface: #ffffff;
+  --lito-border: #e6f1ef;
+  --lito-surface-sea: #eef7f5;
+  --lito-sea-light: #d3eeea;
+  --lito-text: #2f4644;
+  --lito-text-muted: #5c7270;
+  --lito-link: #2f6e6a;
+  --lito-btn-top: #e3f5f2;
+  --lito-btn-bottom: #b5ddd7;
+  --lito-btn-edge: #86bfb7;
+  --lito-btn-text: #1f5a55;
+  --lito-pressed: #dde6e4;
+  --lito-pressed-text: #4f6563;
+  --lito-focus: #6fb3ae;
+
+  --lito-crowd-no_data: #c9d6d4;
+  --lito-crowd-empty: #b5ddd7;
+  --lito-crowd-few: #8cc5bf;
+  --lito-crowd-moderate: #5fa8a3;
+  --lito-crowd-busy: #2f6e6a;
+  --lito-crowd-full: #1f4f4b;
+
+  --lito-font-heading: "Poppins", ui-rounded, "Segoe UI", system-ui, sans-serif;
+  --lito-font-body: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  --lito-radius-s: 12px;
+  --lito-radius-m: 18px;
+  --lito-radius-l: 28px;
+  --lito-card-shadow: 8px 10px 24px -14px rgba(70, 130, 125, 0.35);
+}
+
+/* Meki 3D gumb: odsjaj gore, donji rub, spusti se kad se pritisne. */
+.lito-btn {
+  position: relative;
+  overflow: hidden;
+  min-height: 52px;
+  padding: 0 22px;
+  border: 0;
+  border-radius: 999px;
+  font: 600 16px var(--lito-font-heading);
+  color: var(--lito-btn-text);
+  background: linear-gradient(180deg, var(--lito-btn-top), var(--lito-btn-bottom));
+  box-shadow:
+    0 5px 0 var(--lito-btn-edge),
+    0 16px 24px -10px rgba(70, 140, 130, 0.5),
+    inset 0 2px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -8px 12px -6px rgba(60, 130, 120, 0.25);
+  margin-bottom: 5px;
+  cursor: pointer;
+  transition:
+    transform 0.1s ease,
+    box-shadow 0.1s ease;
+}
+.lito-btn::before {
+  content: "";
+  position: absolute;
+  inset: 3px 10% 55% 10%;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0));
+  pointer-events: none;
+}
+.lito-btn:active {
+  transform: translateY(4px);
+  box-shadow:
+    0 1px 0 var(--lito-btn-edge),
+    0 6px 12px -8px rgba(70, 140, 130, 0.5),
+    inset 0 2px 0 rgba(255, 255, 255, 0.7);
+}
+.lito-btn:focus-visible {
+  outline: 3px solid var(--lito-focus);
+  outline-offset: 2px;
+}
+
+/* Utisnuto i zasivljeno (prodano mjesto, već odabrana opcija). */
+.lito-pressed {
+  background: var(--lito-pressed);
+  color: var(--lito-pressed-text);
+  transform: translateY(3px);
+  box-shadow:
+    inset 0 3px 7px rgba(80, 110, 105, 0.35),
+    inset 0 -2px 3px rgba(255, 255, 255, 0.7);
+}
+
+.lito-card {
+  background: var(--lito-surface);
+  border: 1px solid var(--lito-border);
+  border-radius: var(--lito-radius-m);
+  box-shadow: var(--lito-card-shadow);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lito-btn {
+    transition: none;
+  }
+}
