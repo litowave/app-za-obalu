@@ -120,7 +120,7 @@ Pri dodavanju ponude iznajmljivač bira gotov predložak, koji popuni naziv, na�
 | Aquapark ulaznica | dan | bez jedinica, broji se kapacitet |
 | Vlastito | po izboru | po izboru |
 
-**Komplet** se vodi kao zasebna vrsta s vlastitim oznakama, jer su na većini plaža kompleti postavljeni na stalno mjesto. Ako objekt uz komplete prodaje i pojedinačne ležaljke, to su dvije odvojene vrste i ne troše jedna drugoj zalihu. (Vidi pitanje 11.)
+**Komplet** (suncobran i dvije ležaljke) je zaseban proizvod s vlastitim oznakama (K1, K2...). Pojedinačne ležaljke koje objekt nudi uz komplete drugi su proizvod (L1, L2...). To su fizički različiti predmeti, pa prodaja kompleta ne smanjuje broj slobodnih pojedinačnih ležaljki i obrnuto.
 
 ## 4. Aplikacija za iznajmljivače
 
@@ -374,6 +374,7 @@ Datumi su okvirni i ovise o tome koliko vremena imaš za pregled i testiranje.
 | Brojke za turiste | Pet razina gužve, bez brojki. |
 | Web panel | Da, već u prvoj sezoni. |
 | QR kodovi | Za sada ih dijeli administrator (pločice i naljepnice). Samostalna prijava smještaja možda kasnije. |
+| Komplet i ležaljke | Dva odvojena proizvoda: komplet (suncobran + 2 ležaljke) i pojedinačne ležaljke, ne dijele zalihu. |
 | Domena | `litowave.hr` i `litowave.com` već postoje; QR kodovi vode na `litowave.hr/q/{kod}`. |
 | Poslovni model | Zimsko testiranje, zatim 100 € za sezonu, dugoročno integracija s POS-om. |
 
@@ -412,7 +413,6 @@ Domene drži na automatskom produženju: ako `litowave.hr` istekne, svi tiskani 
 
 ### 10.3 Otvoreno
 
-11. **Komplet i pojedinačne ležaljke.** Ako objekt ima i komplete i slobodne ležaljke, jesu li to fizički različite ležaljke (kako je sada predviđeno), ili se komplet slaže od istih ležaljki i suncobrana pa prodaja kompleta treba smanjiti broj slobodnih ležaljki?
-12. **Automati za najam.** Znaš li već koji proizvođač ili tvrtka postavlja te automate u Hrvatskoj? O tome ovisi možemo li kasnije dobiti podatke izravno iz uređaja.
-13. **Pola dana.** Od kada počinje popodnevni najam (npr. od 13 h)? Isto za sve ili po objektu?
-14. **POS.** Imaš li na umu određenog pružatelja POS uređaja za kasniju integraciju?
+11. **Automati za najam.** Znaš li već koji proizvođač ili tvrtka postavlja te automate u Hrvatskoj? O tome ovisi možemo li kasnije dobiti podatke izravno iz uređaja.
+12. **Pola dana.** Od kada počinje popodnevni najam (npr. od 13 h)? Isto za sve ili po objektu?
+13. **POS.** Imaš li na umu određenog pružatelja POS uređaja za kasniju integraciju?
