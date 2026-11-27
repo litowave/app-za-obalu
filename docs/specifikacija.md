@@ -375,6 +375,7 @@ Datumi su okvirni i ovise o tome koliko vremena imaš za pregled i testiranje.
 | Web panel | Da, već u prvoj sezoni. |
 | QR kodovi | Za sada ih dijeli administrator (pločice i naljepnice). Samostalna prijava smještaja možda kasnije. |
 | Komplet i ležaljke | Dva odvojena proizvoda: komplet (suncobran + 2 ležaljke) i pojedinačne ležaljke, ne dijele zalihu. |
+| Automati za najam | Tek dolaze u Hrvatsku, partner još nije poznat. U prvoj verziji su na karti kao obični objekti bez gužve uživo; povezivanje s uređajima kad se pojavi konkretan proizvođač. |
 | Domena | `litowave.hr` i `litowave.com` već postoje; QR kodovi vode na `litowave.hr/q/{kod}`. |
 | Poslovni model | Zimsko testiranje, zatim 100 € za sezonu, dugoročno integracija s POS-om. |
 
@@ -413,6 +414,5 @@ Domene drži na automatskom produženju: ako `litowave.hr` istekne, svi tiskani 
 
 ### 10.3 Otvoreno
 
-11. **Automati za najam.** Znaš li već koji proizvođač ili tvrtka postavlja te automate u Hrvatskoj? O tome ovisi možemo li kasnije dobiti podatke izravno iz uređaja.
-12. **Pola dana.** Od kada počinje popodnevni najam (npr. od 13 h)? Isto za sve ili po objektu?
-13. **POS.** Imaš li na umu određenog pružatelja POS uređaja za kasniju integraciju?
+11. **Pola dana.** Od kada počinje popodnevni najam (npr. od 13 h)? Isto za sve ili po objektu?
+12. **POS.** Imaš li na umu određenog pružatelja POS uređaja za kasniju integraciju?
