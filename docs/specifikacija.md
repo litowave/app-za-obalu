@@ -196,7 +196,7 @@ Izvoz u PDF (za knjigovođu ili banku) i u Excel (za vlastitu obradu).
 
 ### 5.3 Gdje se gledaju
 
-U aplikaciji (prilagođeno tabletu) i u **web panelu za vlasnike**, već u prvoj sezoni. Panel je dio iste web aplikacije kao turistički dio (`/panel`), s prijavom istim računom. Na računalu izvještaji imaju više mjesta: grafovi jedan uz drugi, filtri koji se primjenjuju na sve odjednom, tablice s detaljima ispod.
+U aplikaciji (prilagođeno tabletu) i u **web panelu za vlasnike**, već u prvoj sezoni. Panel je na `panel.litowave.hr`, dio iste web aplikacije kao turistički dio, s prijavom istim računom kao u mobilnoj aplikaciji. Na računalu izvještaji imaju više mjesta: grafovi jedan uz drugi, filtri koji se primjenjuju na sve odjednom, tablice s detaljima ispod.
 
 ## 6. Pravila
 
@@ -241,7 +241,7 @@ U aplikaciji (prilagođeno tabletu) i u **web panelu za vlasnike**, već u prvoj
 
 ### 6.6 QR kodovi
 - QR kodove izrađuje i dijeli administrator: plastične pločice za smještaj i naljepnice za javna mjesta. Svaki kod je jedinstven, pa se zna koliko je skeniranja došlo s kojeg mjesta.
-- Na kodu je trajno upisana adresa (npr. `ime.hr/q/ab12`), pa domena mora biti kupljena i stalna prije prvog tiskanja (vidi 10.2).
+- Na kodu je trajno upisana adresa (`litowave.hr/q/ab12`), pa se ta putanja nikad ne smije mijenjati (vidi 10.2).
 - Kod se u bazi može preusmjeriti ili ugasiti bez ponovnog tiskanja.
 
 ## 7. Model podataka
@@ -374,6 +374,7 @@ Datumi su okvirni i ovise o tome koliko vremena imaš za pregled i testiranje.
 | Brojke za turiste | Pet razina gužve, bez brojki. |
 | Web panel | Da, već u prvoj sezoni. |
 | QR kodovi | Za sada ih dijeli administrator (pločice i naljepnice). Samostalna prijava smještaja možda kasnije. |
+| Domena | `litowave.hr` i `litowave.com` već postoje; QR kodovi vode na `litowave.hr/q/{kod}`. |
 | Poslovni model | Zimsko testiranje, zatim 100 € za sezonu, dugoročno integracija s POS-om. |
 
 ### 10.2 Ime i domena
@@ -392,16 +393,22 @@ Datumi su okvirni i ovise o tome koliko vremena imaš za pregled i testiranje.
 
 Moja preporuka je **Lito**: već imaš obrt pod tim imenom, a "ljeto na moru" pokriva i plažu i vodene sportove. Druga opcija je **Ombrela**, ako želiš ime koje odmah kaže "plaža".
 
-Prije odluke provjeri dvije stvari: je li ime zaštićeno kao žig (baza Državnog zavoda za intelektualno vlasništvo, DZIV) i je li domena slobodna. Zauzetost domena odavde se nije mogla provjeriti, pa to treba pogledati kod registrara.
+Prije odluke provjeri je li ime zaštićeno kao žig (baza Državnog zavoda za intelektualno vlasništvo, DZIV).
 
-**Domena: da, treba.** Razlozi:
-- Turistički dio je web stranica, a QR kod na pločici trajno sadrži adresu. Kad se pločice jednom otisnu, domena se ne smije mijenjati ni isteći.
-- Iznajmljivačima i partnerima vlastita domena i e-mail (npr. info@lito...) djeluju ozbiljnije od besplatnih adresa.
+**Domene: već imaš `litowave.hr` i `litowave.com`, nove ne trebaju.** Brend je Lito / Litowave. Prijedlog rasporeda:
 
-Preporuka:
-- **.hr** kao glavna: obrt je može registrirati, domaći iznajmljivači joj vjeruju, a turistima nije važno jer adresu ne tipkaju nego skeniraju.
-- **.com** istog imena, ako je slobodna, da je netko drugi ne uzme i za kasnije širenje izvan Hrvatske.
-- Obje zakupiti na nekoliko godina unaprijed i uključiti automatsko produženje.
+| Adresa | Što je tamo |
+|---|---|
+| `litowave.hr` | Stranica obrta i proizvoda: što aplikacija radi, cijena paketa, kontakt, poveznice na trgovine aplikacija. |
+| `litowave.hr/q/{kod}` | **Adresa na QR kodovima.** Samo preusmjerava na turistički dio. Namjerno je na glavnoj domeni, a ne na poddomeni, da tiskani kodovi rade i ako se aplikacija jednom preseli ili preimenuje. |
+| `plaza.litowave.hr` | Turistički dio: karta, objekti, rezervacije. |
+| `panel.litowave.hr` | Web panel za vlasnike: izvještaji, ponuda, postavke. |
+| `litowave.com` | Za strance i kasnije širenje izvan Hrvatske: ista stranica proizvoda na engleskom, a `litowave.com/q/{kod}` radi jednako kao na .hr. |
+| `info@litowave.hr` | E-mail za iznajmljivače i partnere. |
+
+Naziv poddomene za turiste (`plaza`) je prijedlog. Alternative su `more`, `karta` ili `app`. Bitno je samo da se odluči prije tiska jer se pojavljuje u poveznicama koje turisti dijele.
+
+Domene drži na automatskom produženju: ako `litowave.hr` istekne, svi tiskani QR kodovi prestaju raditi.
 
 ### 10.3 Otvoreno
 
