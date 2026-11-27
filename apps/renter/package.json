@@ -14,6 +14,7 @@
     "@expo/metro-runtime": "~58.0.17",
     "@obala/core": "workspace:*",
     "@obala/db": "workspace:*",
+    "@obala/theme": "workspace:*",
     "expo": "~58.1.0",
     "expo-constants": "~58.0.16",
     "expo-linking": "~58.0.17",

@@ -12,6 +12,7 @@
   "dependencies": {
     "@obala/core": "workspace:*",
     "@obala/db": "workspace:*",
+    "@obala/theme": "workspace:*",
     "next": "^16.4.6",
     "next-intl": "^4.16.2",
     "react": "19.3.0",
