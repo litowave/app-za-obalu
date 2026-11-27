@@ -392,7 +392,7 @@ Datumi su okvirni i ovise o tome koliko vremena imaš za pregled i testiranje.
 
 Moja preporuka je **Lito**: već imaš obrt pod tim imenom, a "ljeto na moru" pokriva i plažu i vodene sportove. Druga opcija je **Ombrela**, ako želiš ime koje odmah kaže "plaža".
 
-Prije odluke provjeri dvije stvari: je li ime zaštićeno kao žig (baza Državnog zavoda za intelektualno vlasništvo, DZIV) i je li domena slobodna. Iz mog okruženja nisam mogla provjeriti zauzetost domena.
+Prije odluke provjeri dvije stvari: je li ime zaštićeno kao žig (baza Državnog zavoda za intelektualno vlasništvo, DZIV) i je li domena slobodna. Zauzetost domena odavde se nije mogla provjeriti, pa to treba pogledati kod registrara.
 
 **Domena: da, treba.** Razlozi:
 - Turistički dio je web stranica, a QR kod na pločici trajno sadrži adresu. Kad se pločice jednom otisnu, domena se ne smije mijenjati ni isteći.
