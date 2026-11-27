@@ -1,0 +1,17 @@
+{
+  "meta": {
+    "title": "Plaža i more u blizini",
+    "description": "Ležaljke, suncobrani, jet ski, pedaline i aquaparkovi oko tebe, s gužvom uživo."
+  },
+  "home": {
+    "title": "Što se nudi u blizini",
+    "lead": "Ležaljke, suncobrani, jet ski, pedaline i aquaparkovi oko tebe, s gužvom uživo.",
+    "crowd": {
+      "low": "Slobodno",
+      "medium": "Umjereno",
+      "high": "Gužva",
+      "full": "Popunjeno",
+      "unknown": "Nema podataka"
+    }
+  }
+}

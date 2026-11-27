@@ -1,0 +1,17 @@
+{
+  "meta": {
+    "title": "Beach and sea nearby",
+    "description": "Sunbeds, umbrellas, jet skis, pedal boats and water parks around you, with live crowd levels."
+  },
+  "home": {
+    "title": "What's nearby",
+    "lead": "Sunbeds, umbrellas, jet skis, pedal boats and water parks around you, with live crowd levels.",
+    "crowd": {
+      "low": "Quiet",
+      "medium": "Moderate",
+      "high": "Busy",
+      "full": "Full",
+      "unknown": "No data"
+    }
+  }
+}
