@@ -406,7 +406,7 @@ Prije odluke provjeri je li ime zaštićeno kao žig (baza Državnog zavoda za i
 | `litowave.com` | Za strance i kasnije širenje izvan Hrvatske: ista stranica proizvoda na engleskom, a `litowave.com/q/{kod}` radi jednako kao na .hr. |
 | `info@litowave.hr` | E-mail za iznajmljivače i partnere. |
 
-Naziv poddomene za turiste (`plaza`) je prijedlog. Alternative su `more`, `karta` ili `app`. Bitno je samo da se odluči prije tiska jer se pojavljuje u poveznicama koje turisti dijele.
+Naziv poddomene za turiste (`plaza`) je prijedlog. Alternative su `more`, `karta` ili `app`. Na QR kodovima se ne pojavljuje, ali je u poveznicama koje turisti dijele, pa je dobro odlučiti prije prve sezone.
 
 Domene drži na automatskom produženju: ako `litowave.hr` istekne, svi tiskani QR kodovi prestaju raditi.
 
