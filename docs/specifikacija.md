@@ -107,9 +107,9 @@ Pri dodavanju ponude iznajmljivač bira gotov predložak, koji popuni naziv, na�
 
 | Predložak | Način najma | Predložene oznake (mogu se promijeniti) |
 |---|---|---|
-| Ležaljka | dan / pola dana | L1, L2... |
-| Komplet (2 ležaljke + 1 suncobran) | dan / pola dana | K1, K2... |
-| Cabana | dan | A, B, C... |
+| Ležaljka | cijeli dan | L1, L2... |
+| Komplet (2 ležaljke + 1 suncobran) | cijeli dan | K1, K2... |
+| Cabana | cijeli dan, 1. polovica, 2. polovica | A, B, C... |
 | Trampolin na plaži | sat / termin | T1, T2... |
 | Pedalina | sat | P1, P2... |
 | Jet ski | 15 / 30 / 60 min | J1, J2... |
@@ -203,10 +203,16 @@ U aplikaciji (prilagođeno tabletu) i u **web panelu za vlasnike**, već u prvoj
 ### 6.1 Jedinice i prodaja
 1. Svaka jedinica u jednom trenutku može imati najviše jednu aktivnu rezervaciju ili prodaju. Baza to provjerava, ne samo aplikacija.
 2. Dnevni najam traje od otvaranja do kraja dana. Satni najam i termini imaju točno vrijeme početka i povratka.
-3. Cijena se kod prodaje preuzima iz cjenika i može se promijeniti za tu prodaju (popust, stalni gost). Promjena cjenika ne mijenja prošle prodaje.
-4. Svaka prodaja ima način plaćanja: gotovina ili kartica. Rezervacija ga dobiva kad gost stigne.
-5. Najam na više dana (gost uzme komplet za cijeli tjedan) bilježi se jednim potezom, a sustav stvori zapis za svaki dan, povezane u jednu grupu. U izvještajima se prihod raspoređuje po danima.
-6. Ništa se ne briše. Otkazane i istekle rezervacije ostaju u povijesti s pripadajućim statusom.
+3. **Dijelovi dana.** Vlasnik po vrsti predmeta određuje koji se dijelovi dana prodaju i koji od njih se mogu rezervirati. Primjer, Primošten Cabana, cabane:
+   - cijeli dan (9:00 do zalaska sunca), prodaja i rezervacija
+   - 1. polovica (9:00 do 15:00), prodaja i rezervacija
+   - 2. polovica (15:00 do zalaska sunca), samo prodaja na licu mjesta
+
+   Ista cabana može se prodati za 1. polovicu jednom gostu, a za 2. drugom. Cijeli dan zauzima obje polovice. Kraj "do zalaska sunca" sustav sam računa za lokaciju objekta i datum. Ležaljke i kompleti zadano imaju samo cijeli dan.
+4. Cijena se kod prodaje preuzima iz cjenika i može se promijeniti za tu prodaju (popust, stalni gost). Promjena cjenika ne mijenja prošle prodaje.
+5. Svaka prodaja ima način plaćanja: gotovina ili kartica. Rezervacija ga dobiva kad gost stigne.
+6. Najam na više dana (gost uzme komplet za cijeli tjedan) bilježi se jednim potezom, a sustav stvori zapis za svaki dan, povezane u jednu grupu. U izvještajima se prihod raspoređuje po danima.
+7. Ništa se ne briše. Otkazane i istekle rezervacije ostaju u povijesti s pripadajućim statusom.
 
 ### 6.2 Rezervacije
 1. Rezervacije su isključene dok ih vlasnik ne uključi, za cijeli objekt i posebno za svaku vrstu predmeta (npr. cabane da, kompleti ne).
@@ -278,6 +284,7 @@ Osnova je dobra i specifikacija je ne ruši. Potrebne su dopune iz 7.2.
 - `reservation_hold_until`: rok dolaska za ovu vrstu, ako se razlikuje od roka objekta (null = vrijedi rok objekta)
 - `booking_opens_days_before`, `booking_opens_at`, `booking_closes_at`: razdoblje za rezervacije za ovu vrstu (null = vrijedi objekt). Za cabane u Primošten Cabani: 1, 12:00, 08:00.
 - `description`, `default_duration_min` (za satni najam, npr. 30)
+- nova tablica `item_type_slots`: dijelovi dana po vrsti (naziv, početak, kraj ili "zalazak sunca", cijena, može li se rezervirati). Rezervacija i prodaja vežu se uz dio dana, a postojeće pravilo protiv preklapanja u bazi i dalje vrijedi jer se uspoređuju vremenski rasponi.
 
 **`units`**
 - bez većih promjena; `position` služi za redoslijed u mreži i za raspored koji vidi turist
@@ -376,6 +383,7 @@ Datumi su okvirni i ovise o tome koliko vremena imaš za pregled i testiranje.
 | QR kodovi | Za sada ih dijeli administrator (pločice i naljepnice). Samostalna prijava smještaja možda kasnije. |
 | Komplet i ležaljke | Dva odvojena proizvoda: komplet (suncobran + 2 ležaljke) i pojedinačne ležaljke, ne dijele zalihu. |
 | Automati za najam | Tek dolaze u Hrvatsku, partner još nije poznat. U prvoj verziji su na karti kao obični objekti bez gužve uživo; povezivanje s uređajima kad se pojavi konkretan proizvođač. |
+| Dijelovi dana | Podesivo po vrsti predmeta. Primošten Cabana: cijeli dan i 1. polovica (9 do 15 h) mogu se rezervirati, 2. polovica (15 h do zalaska) samo na licu mjesta. Ležaljke samo cijeli dan. |
 | Domena | `litowave.hr` i `litowave.com` već postoje; QR kodovi vode na `litowave.hr/q/{kod}`. |
 | Poslovni model | Zimsko testiranje, zatim 100 € za sezonu, dugoročno integracija s POS-om. |
 
@@ -414,5 +422,4 @@ Domene drži na automatskom produženju: ako `litowave.hr` istekne, svi tiskani 
 
 ### 10.3 Otvoreno
 
-11. **Pola dana.** Od kada počinje popodnevni najam (npr. od 13 h)? Isto za sve ili po objektu?
-12. **POS.** Imaš li na umu određenog pružatelja POS uređaja za kasniju integraciju?
+11. **POS.** Imaš li na umu određenog pružatelja POS uređaja za kasniju integraciju?
