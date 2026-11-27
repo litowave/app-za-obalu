@@ -24,7 +24,10 @@
       "favicon": "./assets/favicon.png"
     },
     "scheme": "obala-partner",
-    "plugins": ["expo-router"],
+    "plugins": [
+      "expo-router",
+      "expo-font"
+    ],
     "experiments": {
       "typedRoutes": true
     }
