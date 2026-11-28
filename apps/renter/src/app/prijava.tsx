@@ -1,6 +1,17 @@
 import { useState } from "react";
-import { Image, StyleSheet, View } from "react-native";
-import { Body, Button, ErrorText, Field, Screen, Subtitle, space } from "@/components/ui";
+import { Image, StyleSheet, Text, View } from "react-native";
+import { SocialSignIn } from "@/components/SocialSignIn";
+import {
+  Body,
+  Button,
+  color,
+  ErrorText,
+  Field,
+  fonts,
+  Screen,
+  Subtitle,
+  space,
+} from "@/components/ui";
 import { magicLinkRedirect } from "@/lib/auth";
 import { useBusiness } from "@/lib/business";
 import { errorMessage, isConfigured, supabase } from "@/lib/supabase";
@@ -79,6 +90,12 @@ export default function Prijava() {
           Aplikacija nije spojena na bazu (EXPO_PUBLIC_SUPABASE_URL i _ANON_KEY).
         </ErrorText>
       ) : null}
+      <SocialSignIn onError={setError} />
+      <View style={s.divider} accessibilityElementsHidden>
+        <View style={s.line} />
+        <Text style={s.dividerText}>ili e-mailom</Text>
+        <View style={s.line} />
+      </View>
       <Field
         label="E-mail"
         value={email}
@@ -137,4 +154,7 @@ const s = StyleSheet.create({
   head: { alignItems: "flex-start", gap: space.s, marginTop: space.xl },
   logo: { width: 120, height: 60 },
   demo: { gap: space.s, marginTop: space.xl },
+  divider: { flexDirection: "row", alignItems: "center", gap: space.s },
+  line: { flex: 1, height: 1, backgroundColor: color.border },
+  dividerText: { fontFamily: fonts.body, fontSize: 13, color: color.textMuted },
 });

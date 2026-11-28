@@ -8,7 +8,8 @@
     "userInterfaceStyle": "automatic",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "hr.lito.obala.partner"
+      "bundleIdentifier": "hr.lito.obala.partner",
+      "usesAppleSignIn": true
     },
     "android": {
       "adaptiveIcon": {
@@ -31,7 +32,7 @@
       "backgroundColor": "#FFFFFF"
     },
     "scheme": "obala-partner",
-    "plugins": ["expo-router", "expo-font"],
+    "plugins": ["expo-router", "expo-font", "expo-web-browser", "expo-apple-authentication"],
     "experiments": {
       "typedRoutes": true
     }

@@ -1,18 +1,92 @@
 {
   "meta": {
     "title": "Spiaggia e mare vicino a te",
-    "description": "Lettini, ombrelloni, moto d'acqua, pedalò e parchi acquatici intorno a te, con l'affollamento in tempo reale."
+    "description": "Lettini, cabane, moto d'acqua, pedalò e acquapark intorno a te, con l'affollamento in tempo reale."
   },
   "home": {
-    "title": "Cosa c'è nei dintorni",
-    "lead": "Lettini, ombrelloni, moto d'acqua, pedalò e parchi acquatici intorno a te, con l'affollamento in tempo reale.",
-    "crowd": {
-      "no_data": "Nessun dato in tempo reale",
-      "empty": "Vuoto",
-      "few": "Poca gente",
-      "moderate": "Moderato",
-      "busy": "Affollato",
-      "full": "Pieno"
-    }
+    "hello": "Benvenuti! Cosa c'è oggi al mare?",
+    "lead": "Noleggi in spiaggia nelle vicinanze, con una stima dell'affollamento in tempo reale.",
+    "nearby": "Alloggio: {name}",
+    "lookingFor": "Cosa cercate?",
+    "openMap": "Apri la mappa",
+    "footnote": "Senza registrazione e senza pagamento. Prenotazioni solo dove il locale le offre.",
+    "language": "Lingua",
+    "around": "{count, plural, one {locale} other {locali}} entro 15 km",
+    "quietest": "Più tranquillo ora"
+  },
+  "offers": {
+    "all": "Tutto",
+    "cabana": "Cabane",
+    "loungers": "Lettini",
+    "jet_ski": "Moto d'acqua",
+    "sup_kayak": "SUP e kayak",
+    "pedalo": "Pedalò",
+    "aquapark": "Acquapark",
+    "massage": "Massaggi",
+    "diving": "Immersioni"
+  },
+  "crowd": {
+    "no_data": "Nessun dato dal vivo",
+    "empty": "Vuoto",
+    "few": "Poca gente",
+    "moderate": "Moderato",
+    "busy": "Affollato",
+    "full": "Pieno"
+  },
+  "map": {
+    "search": "Cerca una località sulla costa",
+    "noPlace": "Località non presente nell'elenco",
+    "locate": "La mia posizione",
+    "locateFailed": "Posizione non disponibile. Cerca una località per nome.",
+    "list": "Elenco",
+    "map": "Mappa",
+    "notBusy": "Poco affollato",
+    "reservable": "Prenotabile",
+    "empty": "Qui non c'è ancora niente. Sposta la mappa o togli i filtri.",
+    "loading": "Caricamento…",
+    "error": "Impossibile caricare l'offerta. Controlla la connessione.",
+    "from": "da {price}",
+    "fewest": "Meno gente oggi verso le {hour}",
+    "now": "ora",
+    "more": "Di più sul locale",
+    "directions": "Indicazioni",
+    "close": "Chiudi",
+    "count": "{count, plural, =0 {Nessun locale} one {# locale} other {# locali}} sulla mappa",
+    "zoomIn": "Avvicina la mappa per vedere l'offerta",
+    "home": "Home"
+  },
+  "business": {
+    "back": "Mappa",
+    "prices": "Prezzi",
+    "popular": "Quando è affollato",
+    "popularToday": "Oggi per ora",
+    "contact": "Contatti",
+    "call": "Chiama",
+    "website": "Sito web",
+    "hours": "Orari",
+    "closed": "chiuso",
+    "reservable": "Prenotabile",
+    "payOnSite": "Pagamento sul posto.",
+    "noPrice": "prezzo su richiesta",
+    "notListed": "Così i turisti vedranno il tuo locale. Compare sulla mappa dopo l'approvazione.",
+    "notFound": "Locale non trovato o al momento non sulla mappa.",
+    "season": "Stagione {from} – {to}",
+    "unit": {
+      "day": "giorno",
+      "half_day": "mezza giornata",
+      "hour": "ora",
+      "session": "turno"
+    },
+    "minutes": "{n} min",
+    "days": {
+      "mon": "Lun",
+      "tue": "Mar",
+      "wed": "Mer",
+      "thu": "Gio",
+      "fri": "Ven",
+      "sat": "Sab",
+      "sun": "Dom"
+    },
+    "sunset": "tramonto"
   }
 }

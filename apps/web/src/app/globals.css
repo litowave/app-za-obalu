@@ -6,58 +6,80 @@
   --muted: var(--lito-text-muted);
   --card: var(--lito-surface);
   --sea: var(--lito-link);
+  --chip-bg: rgba(255, 255, 255, 0.92);
 }
 
 * {
   box-sizing: border-box;
 }
 
+html,
 body {
   margin: 0;
   background: var(--bg);
   color: var(--fg);
   font-family: var(--lito-font-body);
+  -webkit-text-size-adjust: 100%;
 }
 
-.page {
-  max-width: 640px;
-  margin: 0 auto;
-  padding: 32px 16px;
+a {
+  color: var(--sea);
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--lito-font-heading);
+  font-weight: 600;
+  line-height: 1.2;
 }
 h1 {
-  font-family: var(--lito-font-heading);
   margin: 0 0 8px;
   font-size: 1.75rem;
 }
+h2 {
+  margin: 0 0 10px;
+  font-size: 1.05rem;
+}
+
 .lead {
-  margin: 0 0 24px;
+  margin: 0 0 20px;
   color: var(--muted);
-}
-.list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: 12px;
-}
-.card {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 14px 16px;
-  border-radius: 14px;
-  background: var(--card);
-  border: 1px solid var(--lito-border);
-}
-.card div {
-  display: grid;
-  gap: 2px;
 }
 .muted {
   color: var(--muted);
   font-size: 0.875rem;
 }
+
+/* Gumb kao poveznica */
+a.lito-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none;
+}
+.lito-btn.ghost {
+  background: var(--lito-surface);
+  box-shadow:
+    0 4px 0 var(--lito-border),
+    0 10px 18px -12px rgba(70, 140, 130, 0.45),
+    inset 0 0 0 1px var(--lito-border);
+}
+
+.tag {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--lito-surface-sea);
+  color: var(--lito-btn-text);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* ---------- Razina gužve ---------- */
+
 .crowd {
   display: inline-flex;
   align-items: center;
@@ -73,23 +95,568 @@ h1 {
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: var(--lito-crowd-no_data);
+  background: var(--crowd, var(--lito-crowd-no_data));
 }
-.crowd-no_data::before {
-  background: var(--lito-crowd-no_data);
+.crowd-no_data {
+  --crowd: var(--lito-crowd-no_data);
 }
-.crowd-empty::before {
-  background: var(--lito-crowd-empty);
+.crowd-empty {
+  --crowd: var(--lito-crowd-empty);
 }
-.crowd-few::before {
-  background: var(--lito-crowd-few);
+.crowd-few {
+  --crowd: var(--lito-crowd-few);
 }
-.crowd-moderate::before {
-  background: var(--lito-crowd-moderate);
+.crowd-moderate {
+  --crowd: var(--lito-crowd-moderate);
 }
-.crowd-busy::before {
+.crowd-busy {
+  --crowd: var(--lito-crowd-busy);
+}
+.crowd-full {
+  --crowd: var(--lito-crowd-full);
+}
+
+.crowd-scale {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 10px 0 4px;
+}
+.crowd-scale .steps {
+  display: flex;
+  gap: 3px;
+}
+.crowd-scale .steps i {
+  width: 18px;
+  height: 8px;
+  border-radius: 4px;
+  background: #e1ecea;
+}
+.crowd-scale .steps i.on {
   background: var(--lito-crowd-busy);
 }
-.crowd-full::before {
-  background: var(--lito-crowd-full);
+.crowd-scale b {
+  font-size: 0.875rem;
+}
+
+.popular .bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 46px;
+  margin: 10px 0 2px;
+}
+.popular .bars i {
+  flex: 1;
+  border-radius: 4px 4px 2px 2px;
+  background: var(--lito-sea-light);
+}
+.popular .bars i.now {
+  background: var(--lito-crowd-moderate);
+}
+.bar-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.6875rem;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.quiet {
+  margin: 6px 0 4px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--sea);
+}
+
+/* ---------- Početna ---------- */
+
+.welcome {
+  max-width: 480px;
+  min-height: 100dvh;
+  margin: 0 auto;
+  padding: 20px 16px 24px;
+  display: flex;
+  flex-direction: column;
+  background:
+    radial-gradient(260px 260px at -40px 0, var(--lito-sea-light), transparent 70%),
+    radial-gradient(240px 240px at 110% 45%, #e9f6f3, transparent 70%);
+}
+.welcome-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 22px;
+}
+.welcome-head .logo {
+  width: auto;
+}
+.langs {
+  display: flex;
+  padding: 3px;
+  border-radius: 999px;
+  background: var(--lito-surface-sea);
+}
+.langs a {
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-decoration: none;
+}
+.langs a.on {
+  background: linear-gradient(180deg, var(--lito-btn-top), var(--lito-btn-bottom));
+  color: var(--lito-btn-text);
+  box-shadow: 0 2px 0 var(--lito-btn-edge);
+}
+.where {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 8px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+.welcome h1 {
+  font-size: 1.9rem;
+}
+.welcome h2 {
+  margin-top: 4px;
+  font-size: 1rem;
+}
+.stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.stats .lito-card {
+  display: grid;
+  gap: 4px;
+  padding: 14px;
+  color: var(--fg);
+  text-decoration: none;
+  font-size: 0.8125rem;
+}
+.stats b {
+  font-family: var(--lito-font-heading);
+  font-size: 1.4rem;
+}
+.stats b.small {
+  font-size: 0.95rem;
+}
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 24px;
+}
+.tile.lito-btn {
+  min-height: 78px;
+  padding: 10px 6px;
+  border-radius: var(--lito-radius-m);
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.8125rem;
+  text-align: center;
+}
+.open-map.lito-btn {
+  width: 100%;
+  margin-top: auto;
+}
+.footnote {
+  margin: 10px 0 0;
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+/* ---------- Karta ---------- */
+
+.map-page {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: var(--lito-sea-light);
+}
+/* Jače od .maplibregl-map { position: relative } iz MapLibre CSS-a. */
+.map-page .map {
+  position: absolute;
+  inset: 0;
+}
+.map-top {
+  position: absolute;
+  top: max(12px, env(safe-area-inset-top));
+  left: 12px;
+  right: 12px;
+  z-index: 3;
+  display: grid;
+  gap: 8px;
+  max-width: 640px;
+}
+.search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  border-radius: 20px;
+  color: var(--muted);
+}
+.search-logo {
+  display: flex;
+}
+.search-logo img {
+  width: auto;
+}
+.search input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  font: 500 15px var(--lito-font-body);
+  color: var(--fg);
+  padding: 6px 0;
+  outline: none;
+}
+.search input::-webkit-search-cancel-button {
+  display: none;
+}
+.suggest {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+}
+.suggest button {
+  width: 100%;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 12px;
+  background: none;
+  text-align: left;
+  font: 500 15px var(--lito-font-body);
+  color: var(--fg);
+  cursor: pointer;
+}
+.suggest button:hover,
+.suggest button:focus-visible {
+  background: var(--lito-surface-sea);
+}
+.suggest .none {
+  padding: 10px 12px;
+  font-size: 0.875rem;
+}
+.chips {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 6px;
+}
+.chips::-webkit-scrollbar {
+  display: none;
+}
+.chip {
+  flex: none;
+  padding: 7px 12px;
+  border: 1px solid var(--lito-border);
+  border-radius: 999px;
+  background: var(--chip-bg);
+  font: 600 13px var(--lito-font-body);
+  color: var(--fg);
+  white-space: nowrap;
+  cursor: pointer;
+}
+.chip[aria-pressed="true"] {
+  background: linear-gradient(180deg, var(--lito-btn-top), var(--lito-btn-bottom));
+  border-color: transparent;
+  color: var(--lito-btn-text);
+  box-shadow: 0 3px 0 var(--lito-btn-edge);
+}
+.chip-gap {
+  flex: none;
+  width: 1px;
+  margin: 4px 2px;
+  background: var(--lito-border);
+}
+
+.map-tools {
+  position: absolute;
+  right: 12px;
+  top: calc(max(12px, env(safe-area-inset-top)) + 112px);
+  z-index: 3;
+  display: grid;
+  gap: 8px;
+}
+.round {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--lito-btn-text);
+  cursor: pointer;
+}
+.map-status {
+  position: absolute;
+  left: 12px;
+  top: calc(max(12px, env(safe-area-inset-top)) + 112px);
+  z-index: 2;
+  margin: 0;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: var(--chip-bg);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.pin {
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  filter: drop-shadow(0 3px 4px rgba(31, 79, 75, 0.35));
+  transition: transform 0.15s ease;
+}
+.pin svg path {
+  fill: var(--crowd);
+  stroke: #fff;
+  stroke-width: 2.5;
+}
+.pin svg circle {
+  fill: #fff;
+}
+.pin.crowd-no_data svg circle {
+  fill: var(--lito-surface-sea);
+}
+.pin.selected {
+  transform: scale(1.3);
+  z-index: 2;
+}
+.pin:focus-visible {
+  outline: 3px solid var(--lito-focus);
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+.me {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  background: var(--lito-link);
+  box-shadow: 0 0 0 6px rgba(47, 110, 106, 0.2);
+}
+.me-home {
+  border-radius: 6px;
+}
+
+.sheet {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: max(14px, env(safe-area-inset-bottom));
+  z-index: 4;
+  max-width: 480px;
+  padding: 16px;
+  border-radius: var(--lito-radius-l);
+}
+.sheet-head {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.sheet-head div {
+  flex: 1;
+  min-width: 0;
+}
+.sheet h2 {
+  margin: 0 0 2px;
+  font-size: 1.2rem;
+}
+.meta {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--muted);
+  font-weight: 500;
+}
+.close {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: var(--lito-surface-sea);
+  color: var(--lito-btn-text);
+  cursor: pointer;
+}
+.sheet-actions {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.list-view {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow-y: auto;
+  padding: calc(max(12px, env(safe-area-inset-top)) + 150px) 12px 24px;
+  background: var(--bg);
+}
+.list-view ul {
+  display: grid;
+  gap: 10px;
+  max-width: 640px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  color: var(--fg);
+  text-decoration: none;
+}
+.row div {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+.row .tag {
+  justify-self: start;
+}
+.empty {
+  max-width: 640px;
+  color: var(--muted);
+}
+
+/* U popisu gumbi stoje u redu iznad popisa, da ne prekrivaju retke. */
+.view-list .map-tools {
+  grid-auto-flow: column;
+}
+.view-list .list-view {
+  padding-top: calc(max(12px, env(safe-area-inset-top)) + 170px);
+}
+
+/* MapLibre: diskretna atribucija u stilu Lita */
+.maplibregl-ctrl-attrib {
+  font-size: 10px;
+}
+.view-map .maplibregl-ctrl-bottom-right {
+  bottom: 0;
+}
+
+/* ---------- Stranica objekta ---------- */
+
+.page {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 20px 16px 40px;
+}
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 16px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.notice {
+  padding: 12px 14px;
+  border-radius: var(--lito-radius-s);
+  background: var(--lito-surface-sea);
+  font-size: 0.875rem;
+}
+.business .block {
+  margin: 20px 0;
+}
+.business section.lito-card {
+  padding: 14px 16px;
+}
+.small-h {
+  margin: 14px 0 0;
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+.description {
+  white-space: pre-line;
+}
+.actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.prices {
+  display: grid;
+  gap: 10px;
+  margin: 0 0 10px;
+  padding: 0;
+  list-style: none;
+}
+.prices > li {
+  padding: 14px 16px;
+}
+.price-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-variant-numeric: tabular-nums;
+}
+.prices p {
+  margin: 4px 0 0;
+}
+.slots {
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 4px;
+}
+.slots li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 0.9375rem;
+  font-variant-numeric: tabular-nums;
+}
+.hours {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+}
+.hours div {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+}
+.hours dt {
+  font-weight: 600;
+}
+.hours dd {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (min-width: 900px) {
+  .sheet {
+    left: 24px;
+    right: auto;
+    width: 400px;
+    bottom: 24px;
+  }
+  .map-top {
+    left: 24px;
+    right: auto;
+    width: 560px;
+  }
 }

@@ -261,6 +261,8 @@ export type Database = {
           id: string;
           is_demo: boolean;
           is_published: boolean;
+          lat: number | null;
+          lng: number | null;
           location: unknown;
           name: string;
           opening_hours: Json | null;
@@ -291,6 +293,8 @@ export type Database = {
           id?: string;
           is_demo?: boolean;
           is_published?: boolean;
+          lat?: never;
+          lng?: never;
           location: unknown;
           name: string;
           opening_hours?: Json | null;
@@ -320,6 +324,8 @@ export type Database = {
           id?: string;
           is_demo?: boolean;
           is_published?: boolean;
+          lat?: never;
+          lng?: never;
           location?: unknown;
           name?: string;
           opening_hours?: Json | null;
@@ -985,6 +991,7 @@ export type Database = {
           level: Database["public"]["Enums"]["crowd_level"];
         }[];
       };
+      business_public: { Args: { p_slug: string }; Returns: Json };
       can_see_workday: { Args: { p_business_id: string; p_date: string }; Returns: boolean };
       cancel_booking: { Args: { p_booking_id: string }; Returns: undefined };
       cancel_reservation: { Args: { p_token: string }; Returns: number };
@@ -1047,6 +1054,29 @@ export type Database = {
       is_business_owner: { Args: { p_business_id: string }; Returns: boolean };
       is_platform_admin: { Args: Record<PropertyKey, never>; Returns: boolean };
       local_midnight: { Args: { d: string }; Returns: string };
+      map_businesses: {
+        Args: {
+          p_categories?: Database["public"]["Enums"]["business_category"][];
+          p_east: number;
+          p_north: number;
+          p_south: number;
+          p_west: number;
+        };
+        Returns: {
+          category: Database["public"]["Enums"]["business_category"];
+          crowd: Database["public"]["Enums"]["crowd_level"];
+          id: string;
+          lat: number;
+          lng: number;
+          name: string;
+          offer_keys: string[];
+          offers: string[];
+          place: string;
+          price_from_cents: number;
+          reservations_enabled: boolean;
+          slug: string;
+        }[];
+      };
       mark_reservations_seen: { Args: { p_business_id: string }; Returns: number };
       move_booking: { Args: { p_booking_id: string; p_unit_id: string }; Returns: undefined };
       nearby_businesses: {
