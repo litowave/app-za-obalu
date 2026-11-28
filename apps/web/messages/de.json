@@ -1,0 +1,17 @@
+{
+  "meta": {
+    "title": "Strand und Meer in der Nähe",
+    "description": "Liegen, Sonnenschirme, Jetskis, Tretboote und Wasserparks in deiner Nähe, mit aktueller Auslastung."
+  },
+  "home": {
+    "title": "Was gibt es in der Nähe",
+    "lead": "Liegen, Sonnenschirme, Jetskis, Tretboote und Wasserparks in deiner Nähe, mit aktueller Auslastung.",
+    "crowd": {
+      "low": "Ruhig",
+      "medium": "Mäßig",
+      "high": "Voll",
+      "full": "Ausgebucht",
+      "unknown": "Keine Daten"
+    }
+  }
+}

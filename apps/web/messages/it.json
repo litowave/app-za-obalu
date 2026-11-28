@@ -1,0 +1,17 @@
+{
+  "meta": {
+    "title": "Spiaggia e mare vicino a te",
+    "description": "Lettini, ombrelloni, moto d'acqua, pedalò e parchi acquatici intorno a te, con l'affollamento in tempo reale."
+  },
+  "home": {
+    "title": "Cosa c'è nei dintorni",
+    "lead": "Lettini, ombrelloni, moto d'acqua, pedalò e parchi acquatici intorno a te, con l'affollamento in tempo reale.",
+    "crowd": {
+      "low": "Tranquillo",
+      "medium": "Moderato",
+      "high": "Affollato",
+      "full": "Pieno",
+      "unknown": "Nessun dato"
+    }
+  }
+}
