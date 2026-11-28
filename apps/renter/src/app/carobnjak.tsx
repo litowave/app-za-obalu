@@ -1,8 +1,9 @@
 import type { BusinessCategory } from "@obala/db";
-import * as Location from "expo-location";
 import { useState } from "react";
 import { View } from "react-native";
 import { ItemForm } from "@/components/ItemForm";
+import { LocationPicker, PRECISE_ZOOM } from "@/components/location/LocationPicker";
+import type { PickedLocation } from "@/components/location/mapHtml";
 import {
   Body,
   Button,
@@ -16,18 +17,9 @@ import {
   Title,
 } from "@/components/ui";
 import { useBusiness } from "@/lib/business";
+import { CATEGORIES } from "@/lib/categories";
 import { createItemType } from "@/lib/items";
 import { errorMessage, supabase } from "@/lib/supabase";
-
-const CATEGORIES: { key: BusinessCategory; label: string }[] = [
-  { key: "beach", label: "Plaža" },
-  { key: "watersports", label: "Vodeni sportovi" },
-  { key: "aquapark", label: "Aquapark" },
-  { key: "massage", label: "Masaža na plaži" },
-  { key: "diving", label: "Škola ronjenja" },
-  { key: "self_service", label: "Automat za najam" },
-  { key: "other", label: "Ostalo" },
-];
 
 /** Tri koraka nakon registracije (specifikacija 4.1 I1): objekt, lokacija, prva ponuda. */
 export default function Carobnjak() {
@@ -36,30 +28,10 @@ export default function Carobnjak() {
   const [name, setName] = useState("");
   const [category, setCategory] = useState<BusinessCategory>("beach");
   const [place, setPlace] = useState("");
-  const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(null);
+  const [coords, setCoords] = useState<PickedLocation | null>(null);
   const [businessId, setBusinessId] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  async function locate() {
-    setBusy(true);
-    setError(null);
-    try {
-      const perm = await Location.requestForegroundPermissionsAsync();
-      if (perm.status !== "granted") {
-        setError(
-          "Bez dozvole za lokaciju ne možemo postaviti pribadaču. Dozvoli lokaciju u postavkama mobitela.",
-        );
-        return;
-      }
-      const pos = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced });
-      setCoords({ lat: pos.coords.latitude, lng: pos.coords.longitude });
-    } catch {
-      setError("Lokacija trenutno nije dostupna. Pokušaj vani, uz bolji signal.");
-    } finally {
-      setBusy(false);
-    }
-  }
 
   async function createBusiness() {
     if (!coords) return;
@@ -130,27 +102,17 @@ export default function Carobnjak() {
         <>
           <Title>Gdje si na karti</Title>
           <Body>
-            Najlakše je dok stojiš na svojoj plaži ili pultu: dodirni gumb i lokacija se upiše sama.
-            Kasnije je možeš promijeniti u postavkama.
+            Ovdje će te turisti vidjeti. Ako si sada na plaži, dodirni "Koristi moju trenutnu
+            lokaciju". Kasnije je možeš promijeniti u postavkama.
           </Body>
-          <Button
-            title="Koristi moju trenutnu lokaciju"
-            onPress={locate}
-            loading={busy && !coords}
-            block
-          />
-          {coords ? (
-            <Body>
-              Lokacija spremljena: {coords.lat.toFixed(5)}, {coords.lng.toFixed(5)}
-            </Body>
-          ) : null}
+          <LocationPicker initial={coords} onChange={setCoords} />
           <ErrorText>{error}</ErrorText>
           <Row gap={space.s}>
             <Button title="Natrag" kind="glass" onPress={() => setStep(1)} />
             <Button
               title="Dalje"
-              disabled={!coords}
-              loading={busy && Boolean(coords)}
+              disabled={!coords || coords.zoom < PRECISE_ZOOM}
+              loading={busy}
               onPress={createBusiness}
             />
           </Row>

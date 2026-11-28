@@ -1,18 +1,92 @@
 {
   "meta": {
     "title": "Beach and sea nearby",
-    "description": "Sunbeds, umbrellas, jet skis, pedal boats and water parks around you, with live crowd levels."
+    "description": "Sunbeds, cabanas, jet skis, pedal boats and water parks around you, with live crowd levels."
   },
   "home": {
-    "title": "What's nearby",
-    "lead": "Sunbeds, umbrellas, jet skis, pedal boats and water parks around you, with live crowd levels.",
-    "crowd": {
-      "no_data": "No live data",
-      "empty": "Empty",
-      "few": "Quiet",
-      "moderate": "Moderate",
-      "busy": "Busy",
-      "full": "Full"
-    }
+    "hello": "Welcome! What's on at the sea today?",
+    "lead": "Beach rentals nearby, with a live estimate of how busy they are.",
+    "nearby": "Staying at: {name}",
+    "lookingFor": "What are you looking for?",
+    "openMap": "Open the map",
+    "footnote": "No sign-up and no payment. Reservations only where the place offers them.",
+    "language": "Language",
+    "around": "{count, plural, one {place} other {places}} within 15 km",
+    "quietest": "Quietest now"
+  },
+  "offers": {
+    "all": "All",
+    "cabana": "Cabanas",
+    "loungers": "Sunbeds",
+    "jet_ski": "Jet ski",
+    "sup_kayak": "SUP & kayak",
+    "pedalo": "Pedal boats",
+    "aquapark": "Water park",
+    "massage": "Massage",
+    "diving": "Diving"
+  },
+  "crowd": {
+    "no_data": "No live data",
+    "empty": "Empty",
+    "few": "Quiet",
+    "moderate": "Moderate",
+    "busy": "Busy",
+    "full": "Full"
+  },
+  "map": {
+    "search": "Search a place on the coast",
+    "noPlace": "No such place on the list",
+    "locate": "My location",
+    "locateFailed": "Location is not available. Search a place by name.",
+    "list": "List",
+    "map": "Map",
+    "notBusy": "Not busy",
+    "reservable": "Can be reserved",
+    "empty": "Nothing here yet. Move the map or clear the filters.",
+    "loading": "Loading…",
+    "error": "Couldn't load the offer. Check your connection and try again.",
+    "from": "from {price}",
+    "fewest": "Fewest people today around {hour}:00",
+    "now": "now",
+    "more": "More about this place",
+    "directions": "Directions",
+    "close": "Close",
+    "count": "{count, plural, =0 {No places} one {# place} other {# places}} on the map",
+    "zoomIn": "Zoom in to see what's on offer",
+    "home": "Home"
+  },
+  "business": {
+    "back": "Map",
+    "prices": "Prices",
+    "popular": "When it's busy",
+    "popularToday": "Today by hour",
+    "contact": "Contact",
+    "call": "Call",
+    "website": "Website",
+    "hours": "Opening hours",
+    "closed": "closed",
+    "reservable": "Can be reserved",
+    "payOnSite": "Pay on site.",
+    "noPrice": "price on request",
+    "notListed": "This is how tourists will see your place. It appears on the map once approved.",
+    "notFound": "This place wasn't found or isn't on the map right now.",
+    "season": "Season {from} – {to}",
+    "unit": {
+      "day": "day",
+      "half_day": "half day",
+      "hour": "hour",
+      "session": "session"
+    },
+    "minutes": "{n} min",
+    "days": {
+      "mon": "Mon",
+      "tue": "Tue",
+      "wed": "Wed",
+      "thu": "Thu",
+      "fri": "Fri",
+      "sat": "Sat",
+      "sun": "Sun"
+    },
+    "sunset": "sunset"
   }
 }

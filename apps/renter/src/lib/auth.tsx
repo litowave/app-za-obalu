@@ -12,17 +12,24 @@ interface AuthValue {
 
 const AuthContext = createContext<AuthValue>({ session: null, loading: true, isAnonymous: false });
 
-/** Poveznica za prijavu na mobitelu dolazi kao obala-partner://#access_token=...&refresh_token=... */
-async function sessionFromUrl(url: string | null) {
-  if (!url) return;
+/**
+ * Poveznica za prijavu (e-mail, Google, Apple) na mobitelu vraća se kao
+ * obala-partner://...#access_token=...&refresh_token=... ili s greškom u error_description.
+ */
+export async function sessionFromUrl(url: string | null): Promise<{ error: string | null }> {
+  if (!url) return { error: null };
   const fragment = url.split("#")[1] ?? url.split("?")[1];
-  if (!fragment) return;
+  if (!fragment) return { error: null };
   const params = new URLSearchParams(fragment);
+  const failure = params.get("error_description") ?? params.get("error");
+  if (failure) return { error: failure.replace(/\+/g, " ") };
   const access_token = params.get("access_token");
   const refresh_token = params.get("refresh_token");
   if (access_token && refresh_token) {
-    await supabase.auth.setSession({ access_token, refresh_token });
+    const { error } = await supabase.auth.setSession({ access_token, refresh_token });
+    return { error: error?.message ?? null };
   }
+  return { error: null };
 }
 
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -40,7 +47,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (s && !s.user.is_anonymous) void supabase.rpc("accept_invites");
     });
     if (Platform.OS !== "web") {
-      void Linking.getInitialURL().then(sessionFromUrl);
+      void Linking.getInitialURL().then((u) => sessionFromUrl(u));
     }
     const sub =
       Platform.OS !== "web" ? Linking.addEventListener("url", (e) => sessionFromUrl(e.url)) : null;

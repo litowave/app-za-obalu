@@ -190,7 +190,15 @@
     // The public URL that Auth serves on. Defaults to the API external URL with `/auth/v1` appended.
     // "external_url": "",
     // A list of *exact* URLs that auth providers are permitted to redirect to post authentication.
-    "additional_redirect_urls": ["https://127.0.0.1:3000"],
+    // Aplikacija za iznajmljivače: povratak nakon Google/Apple prijave (obala-partner://prijava),
+    // Expo Go tijekom razvoja (exp://...) i web verzija aplikacije.
+    "additional_redirect_urls": [
+      "https://127.0.0.1:3000",
+      "obala-partner://**",
+      "exp://**",
+      "http://localhost:8081",
+      "https://app.litowave.hr"
+    ],
     // How long tokens are valid for, in seconds. Defaults to 3600 (1 hour), maximum 604,800 (1 week).
     "jwt_expiry": 3600,
     // JWT issuer URL. If not set, defaults to auth.external_url.
@@ -379,9 +387,20 @@
     // `discord`, `facebook`, `github`, `gitlab`, `google`, `keycloak`, `linkedin_oidc`, `notion`, `twitch`,
     // `twitter`, `x`, `slack_oidc`, `spotify`, `workos`, `zoom`.
     "external": {
+      // Prijava Googleom. Ključevi iz Google Clouda (docs/prijava-google-apple.md), u .env.
+      "google": {
+        "enabled": false,
+        "client_id": "env(SUPABASE_AUTH_EXTERNAL_GOOGLE_CLIENT_ID)",
+        "secret": "env(SUPABASE_AUTH_EXTERNAL_GOOGLE_SECRET)",
+        "redirect_uri": "",
+        "url": "",
+        "skip_nonce_check": false
+      },
+      // Prijava Appleom. client_id je popis odvojen zarezima: Services ID (web i Android),
+      // bundle ID aplikacije (hr.lito.obala.partner) i host.exp.Exponent za Expo Go.
       "apple": {
         "enabled": false,
-        "client_id": "",
+        "client_id": "env(SUPABASE_AUTH_EXTERNAL_APPLE_CLIENT_ID)",
         // DO NOT commit your OAuth provider secret to git. Use environment variable substitution instead:
         "secret": "env(SUPABASE_AUTH_EXTERNAL_APPLE_SECRET)",
         // Overrides the default auth callback URL derived from auth.external_url.
