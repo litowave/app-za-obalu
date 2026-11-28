@@ -49,6 +49,7 @@ export type Database = {
           hold_until: string | null;
           id: string;
           note: string | null;
+          paid_at: string | null;
           payment_method: Database["public"]["Enums"]["payment_method"] | null;
           period: unknown;
           price_cents: number | null;
@@ -77,6 +78,7 @@ export type Database = {
           hold_until?: string | null;
           id?: string;
           note?: string | null;
+          paid_at?: string | null;
           payment_method?: Database["public"]["Enums"]["payment_method"] | null;
           period?: never;
           price_cents?: number | null;
@@ -104,6 +106,7 @@ export type Database = {
           hold_until?: string | null;
           id?: string;
           note?: string | null;
+          paid_at?: string | null;
           payment_method?: Database["public"]["Enums"]["payment_method"] | null;
           period?: never;
           price_cents?: number | null;
@@ -760,6 +763,54 @@ export type Database = {
           },
         ];
       };
+      workdays: {
+        Row: {
+          business_id: string;
+          closed_at: string | null;
+          closed_by: string | null;
+          counted_cash_cents: number | null;
+          expected_card_cents: number | null;
+          expected_cash_cents: number | null;
+          note: string | null;
+          opened_at: string;
+          opened_by: string | null;
+          work_date: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          business_id: string;
+          closed_at?: string | null;
+          closed_by?: string | null;
+          counted_cash_cents?: number | null;
+          expected_card_cents?: number | null;
+          expected_cash_cents?: number | null;
+          note?: string | null;
+          opened_at?: string;
+          opened_by?: string | null;
+          work_date: string;
+        };
+        Update: {
+          business_id?: string;
+          closed_at?: string | null;
+          closed_by?: string | null;
+          counted_cash_cents?: number | null;
+          expected_card_cents?: number | null;
+          expected_cash_cents?: number | null;
+          note?: string | null;
+          opened_at?: string;
+          opened_by?: string | null;
+          work_date?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "workdays_business_id_fkey";
+            columns: ["business_id"];
+            isOneToOne: false;
+            referencedRelation: "businesses";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
     };
     Views: {
       booking_amounts: {
@@ -923,6 +974,7 @@ export type Database = {
         }[];
       };
       business_public: { Args: { p_slug: string }; Returns: Json };
+      can_see_workday: { Args: { p_business_id: string; p_date: string }; Returns: boolean };
       cancel_booking: { Args: { p_booking_id: string }; Returns: undefined };
       cancel_reservation: { Args: { p_token: string }; Returns: number };
       catalog_price: { Args: { p_slot_id: string; p_unit_id: string }; Returns: number };
@@ -932,6 +984,27 @@ export type Database = {
           p_payment_method: Database["public"]["Enums"]["payment_method"];
         };
         Returns: undefined;
+      };
+      close_workday: {
+        Args: { p_business_id: string; p_counted_cash_cents: number; p_note?: string };
+        Returns: {
+          business_id: string;
+          closed_at: string | null;
+          closed_by: string | null;
+          counted_cash_cents: number | null;
+          expected_card_cents: number | null;
+          expected_cash_cents: number | null;
+          note: string | null;
+          opened_at: string;
+          opened_by: string | null;
+          work_date: string;
+        };
+        SetofOptions: {
+          from: "*";
+          to: "workdays";
+          isOneToOne: true;
+          isSetofReturn: false;
+        };
       };
       create_demo_business: { Args: Record<PropertyKey, never>; Returns: string };
       crowd_level_for: {
@@ -1012,6 +1085,27 @@ export type Database = {
           occupied: number;
           total: number;
         }[];
+      };
+      open_workday: {
+        Args: { p_business_id: string };
+        Returns: {
+          business_id: string;
+          closed_at: string | null;
+          closed_by: string | null;
+          counted_cash_cents: number | null;
+          expected_card_cents: number | null;
+          expected_cash_cents: number | null;
+          note: string | null;
+          opened_at: string;
+          opened_by: string | null;
+          work_date: string;
+        };
+        SetofOptions: {
+          from: "*";
+          to: "workdays";
+          isOneToOne: true;
+          isSetofReturn: false;
+        };
       };
       purge_guest_data: { Args: Record<PropertyKey, never>; Returns: number };
       queue_reservation_push: { Args: { p_group_id: string }; Returns: number };
@@ -1133,6 +1227,16 @@ export type Database = {
         Returns: string;
       };
       validate_booking_rules: { Args: { p_item_type_id: string }; Returns: undefined };
+      workday_totals: {
+        Args: { p_business_id: string; p_date?: string };
+        Returns: {
+          amount_cents: number;
+          item_type_id: string;
+          item_type_name: string;
+          payment_method: Database["public"]["Enums"]["payment_method"];
+          sales: number;
+        }[];
+      };
     };
     Enums: {
       assignment_mode: "guest_choice" | "auto";
