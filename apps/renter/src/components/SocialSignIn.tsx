@@ -42,6 +42,12 @@ function AppleLogo() {
 }
 
 /**
+ * Prijava Appleom traži plaćeni Apple Developer račun. Aplikacija je zasad web aplikacija,
+ * pa je gumb skriven dok se ne postavi EXPO_PUBLIC_APPLE_SIGNIN=1 (docs/prijava-google-apple.md).
+ */
+const APPLE_ENABLED = process.env.EXPO_PUBLIC_APPLE_SIGNIN === "1";
+
+/**
  * Gumbi "Nastavi s Googleom" i "Nastavi s Appleom". Isti račun služi za prijavu i registraciju:
  * prvi put se račun napravi sam, a čarobnjak zatim vodi kroz upis objekta.
  */
@@ -50,7 +56,7 @@ export function SocialSignIn({ onError }: { onError: (message: string | null) =>
   const [nativeApple, setNativeApple] = useState(false);
 
   useEffect(() => {
-    void hasNativeApple().then(setNativeApple);
+    if (APPLE_ENABLED) void hasNativeApple().then(setNativeApple);
   }, []);
 
   async function go(provider: OAuthProvider) {
@@ -74,7 +80,7 @@ export function SocialSignIn({ onError }: { onError: (message: string | null) =>
         <Text style={[s.text, { color: "#1F1F1F" }]}>Nastavi s Googleom</Text>
       </Pressable>
 
-      {nativeApple ? (
+      {!APPLE_ENABLED ? null : nativeApple ? (
         // Na iPhoneu Apple traži svoj izvorni gumb.
         <AppleAuthentication.AppleAuthenticationButton
           buttonType={AppleAuthentication.AppleAuthenticationButtonType.CONTINUE}

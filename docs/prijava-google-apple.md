@@ -1,6 +1,8 @@
-# Prijava Googleom i Appleom
+# Prijava Googleom (i kasnije Appleom)
 
-Kod je spreman. Da gumbi prorade, trebaju ključevi s tvojih računa kod Googlea i Applea, upisani u Supabase. Bez toga gumbi javljaju grešku, a prijava e-mailom radi kao i prije.
+Lito je web aplikacija, pa je za početak dovoljna **prijava Googleom i e-mailom**. Za Google treba samo besplatan Google Cloud projekt (korak 1 i 3). Dok ključ nije upisan, gumb Google javlja grešku, a prijava e-mailom radi.
+
+Prijava Appleom je u kodu, ali je **skrivena**. Treba plaćeni Apple Developer račun (99 USD godišnje), pa ima smisla tek ako jednom bude aplikacija u App Storeu ili mnogo korisnika iPhonea traži tu prijavu. Tada se napravi korak 2 i u postavkama aplikacije uključi `EXPO_PUBLIC_APPLE_SIGNIN=1`.
 
 Oznake u nastavku:
 
@@ -24,9 +26,9 @@ Oznake u nastavku:
 4. Kopiraj **Client ID** i **Client secret**.
 5. U Supabaseu: **Authentication > Sign In / Providers > Google**: uključi, zalijepi Client ID i Client secret, spremi.
 
-## 2. Apple (oko 30 minuta, treba Apple Developer račun, 99 USD godišnje)
+## 2. Apple, za kasnije (oko 30 minuta, treba Apple Developer račun, 99 USD godišnje)
 
-Apple Developer račun ionako treba za objavu aplikacije u App Storeu. Apple traži da aplikacija koja nudi prijavu Googleom ponudi i prijavu Appleom, pa se ovo ne može preskočiti za iPhone.
+Za web aplikaciju ovo nije obavezno. Postaje obavezno tek ako aplikacija ide u App Store, jer Apple tada traži prijavu Appleom uz prijavu Googleom.
 
 Na [developer.apple.com/account](https://developer.apple.com/account), **Certificates, Identifiers & Profiles**:
 
