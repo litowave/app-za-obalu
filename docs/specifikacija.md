@@ -136,7 +136,8 @@ Expo (React Native), Android i iOS, mobitel i tablet. Mnogi rade s tableta na pu
 **I2. Danas** (glavni ekran, otvara se pri pokretanju)
 - Na vrhu kartice po vrstama predmeta: Kompleti, Ležaljke, Cabane...
 - Mreža jedinica s oznakama. Boje: **zeleno** slobodno, **žuto** rezervirano (s rokom dolaska), **crveno** zauzeto.
-- Iznad mreže brojač: "Zauzeto 34 / 60 · Rezervirano 5". Vlasnik uz to vidi i "Prihod danas 610 € (gotovina 420 €, kartica 190 €)". Djelatnik ne vidi iznose.
+- Iznad mreže brojač: "Zauzeto 34 / 60 · Rezervirano 5". Uz to "Promet danas 610 € (gotovina 420 €, kartica 190 €)", koji vide i vlasnik i djelatnik. Dodir otvara Radni dan.
+- **Radni dan**: svaki dan se otvara novi radni dan. Promet današnjeg dana po načinu plaćanja i po predmetu, a na kraju dana djelatnik izbroji gotovinu i zatvori dan; aplikacija pokaže štima li blagajna, manjka ili ima viška. Broji se novac naplaćen taj dan (najam za tjedan plaćen danas je danas u cijelosti).
 - Dodir na zelenu jedinicu otvara dva velika gumba: **Gotovina** i **Kartica**. Drugi dodir označi jedinicu zauzetom s cijenom iz cjenika. Mali gumb "Poništi" vidi se nekoliko sekundi, za slučajni dodir.
 - Dugi pritisak otvara izbornik jedinice: Zauzmi, Rezerviraj (ime, telefon, rok), Gost je stigao (pa odabir plaćanja), Oslobodi, Otkaži, Promijeni cijenu, Napomena.
 - Višestruki odabir: obitelj uzima dva kompleta, sve se označi i naplati odjednom.
@@ -231,9 +232,10 @@ U aplikaciji (prilagođeno tabletu) i u **web panelu za vlasnike**, već u prvoj
 9. Turist može otkazati sam preko poveznice do roka dolaska. Iznajmljivač može otkazati uvijek.
 
 ### 6.3 Prava pristupa
-1. Prihode, zbrojeve, izvještaje, cijene u cjeniku, postavke i tim vidi i mijenja samo vlasnik.
+1. Izvještaje (prošli dani, mjeseci, sezona), cijene u cjeniku, postavke i tim vidi i mijenja samo vlasnik.
 2. Djelatnik bilježi prodaju, plaćanje i rezervacije. Cijena iz cjenika upisuje se sama, a djelatnik je ne mijenja.
-3. Ovo se provodi u bazi (pravila pristupa i izvještajni pogledi samo za vlasnika), ne samo skrivanjem u aplikaciji.
+3. Djelatnik vidi promet današnjeg radnog dana i zatvara dan s brojanjem gotovine, da provjeri blagajnu. Prošle dane ne vidi. (Odluka 28. 11. 2026.)
+4. Ovo se provodi u bazi (pravila pristupa i izvještajni pogledi samo za vlasnika), ne samo skrivanjem u aplikaciji.
 
 ### 6.4 Objava i privatnost
 1. Objekt se na karti pojavljuje tek kad ga administrator odobri. Tako sprječavamo lažne i duplicirane objekte.
@@ -376,7 +378,7 @@ Datumi su okvirni i ovise o tome koliko vremena imaš za pregled i testiranje.
 | Odabir mjesta | Vlasnik po vrsti predmeta bira: gost bira sam ili automatski. Za cabane gost bira sam. |
 | Rok dolaska | Svaki objekt ima svoja pravila: zadani rok za objekt, različit po vrsti ako treba. |
 | Razdoblje za rezervacije | Podesivo po objektu i vrsti. Cabane u Primošten Cabani: otvara se u 12:00 za sutra, zatvara u 8:00 na dan dolaska. |
-| Djelatnici | Financije i izvještaje vidi samo vlasnik. |
+| Djelatnici | Izvještaje vidi samo vlasnik. Djelatnik vidi promet današnjeg radnog dana i na kraju dana provjerava blagajnu (izmjena 28. 11. 2026.). |
 | Način plaćanja | Bilježi se gotovina ili kartica. |
 | Brojke za turiste | Pet razina gužve, bez brojki. |
 | Web panel | Da, već u prvoj sezoni. |

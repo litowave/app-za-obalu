@@ -340,8 +340,8 @@ export default function Postavke() {
           <View style={s.block}>
             <SectionHeading>Tim</SectionHeading>
             <Body muted>
-              Djelatnik bilježi prodaju i rezervacije. Ne vidi prihode ni izvještaje i ne mijenja
-              cijene.
+              Djelatnik bilježi prodaju i rezervacije i vidi današnji promet za blagajnu. Ne vidi
+              prošle dane ni izvještaje i ne mijenja cijene.
             </Body>
             {members.map((m) => (
               <Card key={m.user_id} style={s.member}>

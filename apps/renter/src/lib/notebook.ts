@@ -16,6 +16,7 @@ import {
   type PaymentMethod,
   remapIds,
   type TimeRange,
+  zagrebToday,
 } from "@obala/core";
 import type { ItemType, ItemTypeSlot, Unit } from "@obala/db";
 import NetInfo from "@react-native-community/netinfo";
@@ -49,7 +50,7 @@ export interface Revenue {
   card: number;
 }
 
-export function useNotebook(businessId: string | null, date: string, isOwner: boolean) {
+export function useNotebook(businessId: string | null, date: string) {
   const [snap, setSnap] = useState<Snapshot>(EMPTY);
   const [ops, setOps] = useState<OutboxOp[]>([]);
   const [online, setOnline] = useState(true);
@@ -117,25 +118,23 @@ export function useNotebook(businessId: string | null, date: string, isOwner: bo
     setLoading(false);
     void saveJson(cacheKey, next);
 
-    if (isOwner) {
-      const amounts = await supabase
-        .from("booking_amounts")
-        .select("payment_method, price_cents")
-        .eq("business_id", businessId)
-        .eq("service_date", date)
-        .eq("status", "sold");
-      if (!amounts.error && amounts.data) {
+    // Promet današnjeg radnog dana vide i djelatnik i vlasnik (blagajna).
+    if (date === zagrebToday()) {
+      const totals = await supabase.rpc("workday_totals", { p_business_id: businessId });
+      if (!totals.error && totals.data) {
         const r: Revenue = { total: 0, cash: 0, card: 0 };
-        for (const a of amounts.data) {
-          const p = a.price_cents ?? 0;
+        for (const a of totals.data) {
+          const p = Number(a.amount_cents ?? 0);
           r.total += p;
           if (a.payment_method === "cash") r.cash += p;
           if (a.payment_method === "card") r.card += p;
         }
         setRevenue(r);
       }
+    } else {
+      setRevenue(null);
     }
-  }, [businessId, date, isOwner]);
+  }, [businessId, date]);
 
   /** Šalje red čekanja redom. Zaustavlja se na prvoj mrežnoj grešci. */
   const flush = useCallback(async () => {
