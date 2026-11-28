@@ -422,6 +422,11 @@ a.lito-btn {
   background: none;
   cursor: pointer;
   filter: drop-shadow(0 3px 4px rgba(31, 79, 75, 0.35));
+}
+/* Položaj oznake MapLibre piše u transform gumba, pa se povećava samo slika. */
+.pin svg {
+  display: block;
+  transform-origin: 50% 100%;
   transition: transform 0.15s ease;
 }
 .pin svg path {
@@ -436,8 +441,10 @@ a.lito-btn {
   fill: var(--lito-surface-sea);
 }
 .pin.selected {
-  transform: scale(1.3);
   z-index: 2;
+}
+.pin.selected svg {
+  transform: scale(1.3);
 }
 .pin:focus-visible {
   outline: 3px solid var(--lito-focus);

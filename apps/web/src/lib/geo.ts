@@ -1,7 +1,7 @@
 /** Hrvatska obala u cijelosti: od Savudrije do Prevlake. */
 export const COAST_BOUNDS: [[number, number], [number, number]] = [
-  [13.3, 42.3],
-  [19.5, 45.7],
+  [13.45, 42.35],
+  [18.6, 45.65],
 ];
 
 export const COAST_CENTER = { lat: 43.9, lng: 15.8 };

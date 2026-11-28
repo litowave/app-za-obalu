@@ -117,7 +117,7 @@ export function MapView({ center, initialOffer }: Props) {
         style: MAP_STYLE,
         ...(center
           ? { center: [center.lng, center.lat] as [number, number], zoom: 11.5 }
-          : { bounds: COAST_BOUNDS, fitBoundsOptions: { padding: 24 } }),
+          : { bounds: COAST_BOUNDS, fitBoundsOptions: { padding: 12 } }),
         minZoom: 5,
         maxZoom: 18,
         attributionControl: { compact: true },
@@ -195,7 +195,11 @@ export function MapView({ center, initialOffer }: Props) {
         markers.current.set(b.id, mk);
       }
       const el = mk.getElement();
-      el.className = `pin crowd-${b.crowd}${b.id === selectedId ? " selected" : ""}`;
+      // MapLibre oznaci daje svoju klasu (position: absolute); ne smije se pregaziti.
+      el.classList.add("pin");
+      for (const c of [...el.classList]) if (c.startsWith("crowd-")) el.classList.remove(c);
+      el.classList.add(`crowd-${b.crowd}`);
+      el.classList.toggle("selected", b.id === selectedId);
       el.setAttribute("aria-label", `${b.name}, ${t(`crowd.${b.crowd}`)}`);
     }
   }, [visible, selectedId, t]);
