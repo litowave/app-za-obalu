@@ -1,5 +1,4 @@
-import type { Business } from "@obala/db";
-import * as Location from "expo-location";
+import type { Business, BusinessCategory } from "@obala/db";
 import { useCallback, useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import {
@@ -8,6 +7,8 @@ import {
   type RulesDraft,
   rulesFromDraft,
 } from "@/components/BookingRulesEditor";
+import { LocationPicker, PRECISE_ZOOM } from "@/components/location/LocationPicker";
+import type { PickedLocation } from "@/components/location/mapHtml";
 import {
   Body,
   Button,
@@ -17,6 +18,7 @@ import {
   ErrorText,
   Field,
   fonts,
+  Label,
   Row,
   Screen,
   SectionHeading,
@@ -25,6 +27,7 @@ import {
 } from "@/components/ui";
 import { useAuth } from "@/lib/auth";
 import { useBusiness } from "@/lib/business";
+import { CATEGORIES } from "@/lib/categories";
 import { errorMessage, supabase } from "@/lib/supabase";
 
 interface Member {
@@ -62,6 +65,9 @@ export default function Postavke() {
     description: "",
     website: "",
   });
+  const [category, setCategory] = useState<BusinessCategory>("beach");
+  const [picked, setPicked] = useState<PickedLocation | null>(null);
+  const [locSaved, setLocSaved] = useState(false);
   const [busy, setBusy] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [errorFor, setErrorFor] = useState<string | null>(null);
@@ -84,6 +90,7 @@ export default function Postavke() {
       description: b.description ?? "",
       website: b.website ?? "",
     });
+    setCategory(b.category);
     setResEnabled(b.reservations_enabled);
     setResNote(b.reservation_note ?? "");
     setRules(
@@ -145,6 +152,7 @@ export default function Postavke() {
       place: form.place.trim() || null,
       description: form.description.trim() || null,
       website: form.website.trim() || null,
+      category,
     });
     if (ok) {
       setSaved(true);
@@ -175,22 +183,23 @@ export default function Postavke() {
     }
   }
 
-  async function relocate() {
-    const perm = await Location.requestForegroundPermissionsAsync();
-    if (perm.status !== "granted") {
-      setError("Dozvoli lokaciju u postavkama mobitela.");
-      return;
-    }
-    const pos = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced });
-    await update("location", {
-      location: `SRID=4326;POINT(${pos.coords.longitude} ${pos.coords.latitude})`,
+  async function saveLocation() {
+    if (!picked) return;
+    const ok = await update("location", {
+      location: `SRID=4326;POINT(${picked.lng.toFixed(6)} ${picked.lat.toFixed(6)})`,
     } as never);
+    if (ok) {
+      setPicked(null);
+      setLocSaved(true);
+      setTimeout(() => setLocSaved(false), 2000);
+    }
   }
 
   async function invite() {
     if (!b) return;
     setBusy("invite");
     setError(null);
+    setErrorFor(null);
     const { error: e } = await supabase
       .from("business_invites")
       .insert({ business_id: b.id, email: inviteEmail.trim().toLowerCase() });
@@ -210,6 +219,7 @@ export default function Postavke() {
       .delete()
       .eq("business_id", b.id)
       .eq("user_id", userId);
+    setErrorFor(null);
     if (e) setError(errorMessage(e));
     await loadTeam();
   }
@@ -243,6 +253,19 @@ export default function Postavke() {
               value={form.name}
               onChangeText={(name) => setForm({ ...form, name })}
             />
+            <View>
+              <Label>Što nudiš</Label>
+              <Row>
+                {CATEGORIES.map((c) => (
+                  <Chip
+                    key={c.key}
+                    label={c.label}
+                    selected={category === c.key}
+                    onPress={() => setCategory(c.key)}
+                  />
+                ))}
+              </Row>
+            </View>
             <Field
               label="Mjesto"
               value={form.place}
@@ -277,13 +300,31 @@ export default function Postavke() {
               loading={busy === "profile"}
               block
             />
+            {errorFor === "profile" ? <ErrorText>{error}</ErrorText> : null}
+          </View>
+
+          <View style={s.block}>
+            <SectionHeading>Lokacija na karti</SectionHeading>
+            <LocationPicker
+              key={b.id}
+              initial={b.lat != null && b.lng != null ? { lat: b.lat, lng: b.lng } : null}
+              onChange={(p) => {
+                const moved =
+                  b.lat == null ||
+                  b.lng == null ||
+                  Math.abs(p.lat - b.lat) > 1e-6 ||
+                  Math.abs(p.lng - b.lng) > 1e-6;
+                setPicked(moved ? p : null);
+              }}
+            />
             <Button
-              title="Postavi lokaciju na mjesto gdje sad stojim"
-              kind="glass"
-              onPress={relocate}
+              title={locSaved ? "Lokacija spremljena" : "Spremi lokaciju"}
+              onPress={saveLocation}
+              disabled={!picked || picked.zoom < PRECISE_ZOOM}
               loading={busy === "location"}
               block
             />
+            {errorFor === "location" ? <ErrorText>{error}</ErrorText> : null}
           </View>
 
           <View style={s.block}>
@@ -384,7 +425,9 @@ export default function Postavke() {
         <Body muted>Ti si djelatnik u objektu {b.name}. Postavke mijenja vlasnik.</Body>
       )}
 
-      {errorFor !== "reservations" ? <ErrorText>{error}</ErrorText> : null}
+      {!errorFor || !["reservations", "profile", "location"].includes(errorFor) ? (
+        <ErrorText>{error}</ErrorText>
+      ) : null}
 
       <View style={s.block}>
         <SectionHeading>Račun</SectionHeading>

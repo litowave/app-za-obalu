@@ -1,18 +1,92 @@
 {
   "meta": {
     "title": "Plaža i more u blizini",
-    "description": "Ležaljke, suncobrani, jet ski, pedaline i aquaparkovi oko tebe, s gužvom uživo."
+    "description": "Ležaljke, cabane, jet ski, pedaline i aquaparkovi oko tebe, s gužvom uživo."
   },
   "home": {
-    "title": "Što se nudi u blizini",
-    "lead": "Ležaljke, suncobrani, jet ski, pedaline i aquaparkovi oko tebe, s gužvom uživo.",
-    "crowd": {
-      "no_data": "Nema podataka uživo",
-      "empty": "Prazno",
-      "few": "Malo ljudi",
-      "moderate": "Umjereno",
-      "busy": "Gužva",
-      "full": "Popunjeno"
-    }
+    "hello": "Dobro došli! Što danas na moru?",
+    "lead": "Ponuda na plažama u blizini, s procjenom gužve uživo.",
+    "nearby": "Smještaj: {name}",
+    "lookingFor": "Što tražite?",
+    "openMap": "Otvori kartu",
+    "footnote": "Bez prijave i bez plaćanja. Rezervacije samo gdje ih objekt nudi.",
+    "language": "Jezik",
+    "around": "{count, plural, one {ponuda} few {ponude} other {ponuda}} u krugu 15 km",
+    "quietest": "Najmirnije sada"
+  },
+  "offers": {
+    "all": "Sve",
+    "cabana": "Cabane",
+    "loungers": "Ležaljke",
+    "jet_ski": "Jet ski",
+    "sup_kayak": "SUP i kajak",
+    "pedalo": "Pedaline",
+    "aquapark": "Aquapark",
+    "massage": "Masaža",
+    "diving": "Ronjenje"
+  },
+  "crowd": {
+    "no_data": "Nema podataka uživo",
+    "empty": "Prazno",
+    "few": "Malo ljudi",
+    "moderate": "Umjereno",
+    "busy": "Gužva",
+    "full": "Popunjeno"
+  },
+  "map": {
+    "search": "Traži mjesto na obali",
+    "noPlace": "Nema takvog mjesta na popisu",
+    "locate": "Moja lokacija",
+    "locateFailed": "Lokacija nije dostupna. Potraži mjesto po imenu.",
+    "list": "Popis",
+    "map": "Karta",
+    "notBusy": "Nije gužva",
+    "reservable": "Rezervacija moguća",
+    "empty": "Ovdje još nema objekata. Pomakni kartu ili makni filtre.",
+    "loading": "Učitavam…",
+    "error": "Ponuda se nije učitala. Provjeri vezu i pokušaj ponovno.",
+    "from": "od {price}",
+    "fewest": "Najmanje ljudi danas oko {hour} h",
+    "now": "sada",
+    "more": "Više o objektu",
+    "directions": "Upute",
+    "close": "Zatvori",
+    "count": "{count, plural, =0 {Nema objekata} one {# objekt} few {# objekta} other {# objekata}} na karti",
+    "zoomIn": "Približi kartu da vidiš ponudu",
+    "home": "Početna"
+  },
+  "business": {
+    "back": "Karta",
+    "prices": "Cjenik",
+    "popular": "Kada je gužva",
+    "popularToday": "Danas po satima",
+    "contact": "Kontakt",
+    "call": "Nazovi",
+    "website": "Web stranica",
+    "hours": "Radno vrijeme",
+    "closed": "zatvoreno",
+    "reservable": "Rezervacija moguća",
+    "payOnSite": "Plaćanje na licu mjesta.",
+    "noPrice": "cijena na upit",
+    "notListed": "Ovako će objekt izgledati turistima. Na karti je tek nakon odobrenja.",
+    "notFound": "Objekt nije pronađen ili trenutno nije na karti.",
+    "season": "Sezona {from} – {to}",
+    "unit": {
+      "day": "dan",
+      "half_day": "pola dana",
+      "hour": "sat",
+      "session": "termin"
+    },
+    "minutes": "{n} min",
+    "days": {
+      "mon": "Pon",
+      "tue": "Uto",
+      "wed": "Sri",
+      "thu": "Čet",
+      "fri": "Pet",
+      "sat": "Sub",
+      "sun": "Ned"
+    },
+    "sunset": "zalazak"
   }
 }

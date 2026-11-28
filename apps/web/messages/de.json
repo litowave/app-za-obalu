@@ -1,18 +1,92 @@
 {
   "meta": {
     "title": "Strand und Meer in der Nähe",
-    "description": "Liegen, Sonnenschirme, Jetskis, Tretboote und Wasserparks in deiner Nähe, mit aktueller Auslastung."
+    "description": "Liegen, Cabanas, Jetskis, Tretboote und Aquaparks in deiner Nähe, mit Live-Auslastung."
   },
   "home": {
-    "title": "Was gibt es in der Nähe",
-    "lead": "Liegen, Sonnenschirme, Jetskis, Tretboote und Wasserparks in deiner Nähe, mit aktueller Auslastung.",
-    "crowd": {
-      "no_data": "Keine Live-Daten",
-      "empty": "Leer",
-      "few": "Wenig los",
-      "moderate": "Mäßig",
-      "busy": "Voll",
-      "full": "Ausgebucht"
-    }
+    "hello": "Willkommen! Was ist heute am Meer los?",
+    "lead": "Strandangebote in der Nähe, mit Live-Einschätzung, wie voll es ist.",
+    "nearby": "Unterkunft: {name}",
+    "lookingFor": "Was suchen Sie?",
+    "openMap": "Karte öffnen",
+    "footnote": "Ohne Anmeldung und ohne Bezahlung. Reservierung nur, wo der Anbieter sie anbietet.",
+    "language": "Sprache",
+    "around": "{count, plural, one {Anbieter} other {Anbieter}} im Umkreis von 15 km",
+    "quietest": "Gerade am ruhigsten"
+  },
+  "offers": {
+    "all": "Alle",
+    "cabana": "Cabanas",
+    "loungers": "Liegen",
+    "jet_ski": "Jetski",
+    "sup_kayak": "SUP & Kajak",
+    "pedalo": "Tretboote",
+    "aquapark": "Aquapark",
+    "massage": "Massage",
+    "diving": "Tauchen"
+  },
+  "crowd": {
+    "no_data": "Keine Live-Daten",
+    "empty": "Leer",
+    "few": "Wenig los",
+    "moderate": "Mäßig",
+    "busy": "Voll",
+    "full": "Ausgebucht"
+  },
+  "map": {
+    "search": "Ort an der Küste suchen",
+    "noPlace": "Diesen Ort gibt es nicht in der Liste",
+    "locate": "Mein Standort",
+    "locateFailed": "Standort nicht verfügbar. Suche einen Ort nach Namen.",
+    "list": "Liste",
+    "map": "Karte",
+    "notBusy": "Nicht voll",
+    "reservable": "Reservierbar",
+    "empty": "Hier gibt es noch nichts. Verschiebe die Karte oder entferne Filter.",
+    "loading": "Lädt…",
+    "error": "Angebot konnte nicht geladen werden. Prüfe die Verbindung.",
+    "from": "ab {price}",
+    "fewest": "Heute am wenigsten los gegen {hour} Uhr",
+    "now": "jetzt",
+    "more": "Mehr zum Anbieter",
+    "directions": "Route",
+    "close": "Schließen",
+    "count": "{count, plural, =0 {Keine Anbieter} one {# Anbieter} other {# Anbieter}} auf der Karte",
+    "zoomIn": "Zoome hinein, um Angebote zu sehen",
+    "home": "Start"
+  },
+  "business": {
+    "back": "Karte",
+    "prices": "Preise",
+    "popular": "Wann ist es voll",
+    "popularToday": "Heute nach Stunden",
+    "contact": "Kontakt",
+    "call": "Anrufen",
+    "website": "Webseite",
+    "hours": "Öffnungszeiten",
+    "closed": "geschlossen",
+    "reservable": "Reservierbar",
+    "payOnSite": "Bezahlung vor Ort.",
+    "noPrice": "Preis auf Anfrage",
+    "notListed": "So sehen Touristen deinen Betrieb. Auf der Karte erscheint er nach der Freigabe.",
+    "notFound": "Anbieter nicht gefunden oder derzeit nicht auf der Karte.",
+    "season": "Saison {from} – {to}",
+    "unit": {
+      "day": "Tag",
+      "half_day": "halber Tag",
+      "hour": "Stunde",
+      "session": "Termin"
+    },
+    "minutes": "{n} Min.",
+    "days": {
+      "mon": "Mo",
+      "tue": "Di",
+      "wed": "Mi",
+      "thu": "Do",
+      "fri": "Fr",
+      "sat": "Sa",
+      "sun": "So"
+    },
+    "sunset": "Sonnenuntergang"
   }
 }
