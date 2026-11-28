@@ -1,6 +1,6 @@
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(13);
+select plan(15);
 
 insert into auth.users (id, email, raw_user_meta_data) values
   ('11111111-0000-0000-0000-000000000001', 'a@test.local', '{}'),
@@ -69,6 +69,14 @@ select is(
 select is(
   (select public.business_public('plaza-zaboric') -> 'offers' -> 1 -> 'slots' -> 1 ->> 'price_cents'),
   '5000', 'dio dana ima svoju cijenu'
+);
+select is(
+  (select public.business_public('plaza-zaboric') -> 'offers' -> 0 ->> 'assignment_mode'),
+  'auto', 'stranica objekta zna način dodjele mjesta'
+);
+select ok(
+  (select public.business_public('plaza-zaboric') -> 'offers' -> 1 -> 'slots' -> 0 ? 'id'),
+  'dio dana ima id za rezervaciju'
 );
 
 set local role authenticated;

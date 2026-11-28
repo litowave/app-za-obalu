@@ -110,8 +110,13 @@ export default async function BusinessPage({
       {b.description ? <p className="description">{b.description}</p> : null}
 
       <div className="actions">
+        {b.reservations_enabled && b.listed ? (
+          <Link className="lito-btn" href={`/o/${b.slug}/rezerviraj`}>
+            {t("reserve.button")}
+          </Link>
+        ) : null}
         <a
-          className="lito-btn"
+          className={b.reservations_enabled && b.listed ? "lito-btn ghost" : "lito-btn"}
           href={directionsUrl(b.lat, b.lng)}
           target="_blank"
           rel="noopener noreferrer"

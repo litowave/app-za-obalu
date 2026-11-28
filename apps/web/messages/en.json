@@ -88,5 +88,60 @@
       "sun": "Sun"
     },
     "sunset": "sunset"
+  },
+  "reserve": {
+    "button": "Reserve",
+    "title": "Reservation",
+    "what": "What would you like to reserve?",
+    "date": "Date",
+    "today": "Today",
+    "tomorrow": "Tomorrow",
+    "slot": "Time of day",
+    "place": "Choose your spot",
+    "placeHint": "Grey ones are taken. You can pick more than one.",
+    "quantity": "How many?",
+    "free": "{count} free",
+    "none": "No free spots for that day.",
+    "notYetOpen": "Reservations for this day open {when}.",
+    "closed": "Reservations for this day are closed. Just come by.",
+    "unavailable": "This can't be reserved right now.",
+    "name": "Full name",
+    "phone": "Mobile number",
+    "phoneHint": "The place may call you if needed.",
+    "price": "Guide price: {price}. Pay on site.",
+    "terms": "I understand the reservation is cancelled automatically if I don't arrive by {time}.",
+    "termsNoHold": "I understand I should cancel if I'm not coming.",
+    "submit": "Send reservation",
+    "sending": "Sending…",
+    "loading": "Checking free spots…",
+    "err": {
+      "generic": "The reservation didn't go through. Please try again.",
+      "taken": "That spot was just taken. Please choose another.",
+      "samePhone": "You already have a reservation with this number for that day.",
+      "blocked": "Reservations with this number aren't possible. Please call the place.",
+      "closed": "Reservations for this day are closed. Just come by.",
+      "full": "Not enough free spots for that day.",
+      "input": "Enter your name and mobile number."
+    }
+  },
+  "my": {
+    "title": "Your reservation",
+    "status": {
+      "reserved": "Confirmed",
+      "sold": "You've arrived, enjoy!",
+      "expired": "Cancelled, the arrival time passed",
+      "cancelled": "Cancelled"
+    },
+    "places": "Spots",
+    "date": "Date",
+    "arriveBy": "Arrive by {time}, otherwise the reservation is cancelled automatically.",
+    "save": "Keep this page. Use it to check or cancel your reservation.",
+    "cancel": "Cancel reservation",
+    "cancelAsk": "Cancel for sure? The spot is released for other guests right away.",
+    "cancelYes": "Yes, cancel",
+    "keep": "No",
+    "calendar": "Add to calendar",
+    "notFound": "Reservation not found. Please check the link.",
+    "cancelFailed": "This reservation can no longer be cancelled."
   }
 }
