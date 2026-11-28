@@ -1,6 +1,7 @@
 import { createClient as createSupabaseClient, type SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "./database.types";
 
+export type { Session } from "@supabase/supabase-js";
 export type { Database } from "./database.types";
 export type ObalaClient = SupabaseClient<Database>;
 

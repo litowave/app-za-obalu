@@ -62,6 +62,20 @@ Pravila su opisana u `docs/specifikacija.md`. Ovdje je kratki pregled gdje što 
 
 Demo prijave (lozinka `obala123`): `cabana@demo.local` vlasnik, `djelatnik@demo.local` djelatnik, `admin@demo.local` administrator.
 
+## Aplikacija za iznajmljivače (`apps/renter`)
+
+| Ekran | Što radi |
+|---|---|
+| Prijava | E-mail i lozinka, poveznica na e-mail, "Isprobaj bez registracije" (anonimna prijava + `create_demo_business`, plaža s cijelom prošlom sezonom) |
+| Čarobnjak | Tri koraka nakon registracije: objekt, lokacija (trenutna pozicija), prva ponuda |
+| Danas | Mreža mjesta po vrsti i dijelu dana. Dodir otvara list: prodano gotovina ili kartica (i na više dana), rezerviraj, gost je stigao, oslobodi, poništi. "Poništi" u obavijesti nekoliko sekundi. Dugi pritisak ili "Odaberi više mjesta" za obitelj. Satni najam (jet ski, pedaline) kao popis s odbrojavanjem i "Vraćeno". Vlasnik vidi prihod danas, djelatnik ne. Gumb sa suncem za jako sunce |
+| Predmeti | Padajući izbornik po skupinama s "Vlastiti naziv…", broj komada, oznaka, numeriranje, cijena, pregled oznaka s preimenovanjem prije spremanja. Uređivanje: cijena, broj komada (smanjenje samo deaktivira), preimenovanje, uklanjanje |
+| Postavke | Profil objekta, lokacija, zahtjev za objavu na karti, tim (pozivnica po e-mailu), odjava |
+
+**Rad bez signala.** Svaka promjena ide u red čekanja spremljen na uređaju (`packages/core/src/outbox.ts`) i odmah se vidi. Red se šalje redom kad se veza vrati; prodaja napravljena bez veze dobiva privremeni id, pa "Oslobodi" ili "Poništi" na njoj rade i prije slanja. Ako baza odbije promjenu (mjesto je u međuvremenu rezervirano preko aplikacije), aplikacija to javi i promjena se makne.
+
+Pokretanje: `pnpm --filter @obala/renter dev` (Expo Go ili web), uz `EXPO_PUBLIC_SUPABASE_URL` i `EXPO_PUBLIC_SUPABASE_ANON_KEY` u `.env`.
+
 ## Što slijedi
 
 1. Aplikacija iznajmljivača: prijava, dodavanje vrsta i jedinica, označavanje prodaje na Supabase uz offline rad.

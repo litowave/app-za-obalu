@@ -139,6 +139,45 @@ export type Database = {
           },
         ];
       };
+      business_invites: {
+        Row: {
+          accepted_at: string | null;
+          business_id: string;
+          created_at: string;
+          email: string;
+          id: string;
+          invited_by: string | null;
+          role: Database["public"]["Enums"]["member_role"];
+        };
+        ComputedFields: never;
+        Insert: {
+          accepted_at?: string | null;
+          business_id: string;
+          created_at?: string;
+          email: string;
+          id?: string;
+          invited_by?: string | null;
+          role?: Database["public"]["Enums"]["member_role"];
+        };
+        Update: {
+          accepted_at?: string | null;
+          business_id?: string;
+          created_at?: string;
+          email?: string;
+          id?: string;
+          invited_by?: string | null;
+          role?: Database["public"]["Enums"]["member_role"];
+        };
+        Relationships: [
+          {
+            foreignKeyName: "business_invites_business_id_fkey";
+            columns: ["business_id"];
+            isOneToOne: false;
+            referencedRelation: "businesses";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       business_members: {
         Row: {
           business_id: string;
@@ -768,6 +807,7 @@ export type Database = {
       };
     };
     Functions: {
+      accept_invites: { Args: Record<PropertyKey, never>; Returns: number };
       add_units: {
         Args: { p_count: number; p_item_type_id: string };
         Returns: {
@@ -837,6 +877,7 @@ export type Database = {
         };
         Returns: undefined;
       };
+      create_demo_business: { Args: Record<PropertyKey, never>; Returns: string };
       crowd_level_for: {
         Args: { p_occupied: number; p_total: number };
         Returns: Database["public"]["Enums"]["crowd_level"];
@@ -992,7 +1033,9 @@ export type Database = {
         Returns: undefined;
       };
       set_subscription: { Args: { p_business_id: string; p_until: string }; Returns: undefined };
+      set_unit_count: { Args: { p_count: number; p_item_type_id: string }; Returns: number };
       slot_range: { Args: { p_date: string; p_slot_id: string }; Returns: unknown };
+      slugify: { Args: { p_text: string }; Returns: string };
       sunset_at: { Args: { p_date: string; p_lat: number; p_lng: number }; Returns: string };
       unit_label: {
         Args: {
