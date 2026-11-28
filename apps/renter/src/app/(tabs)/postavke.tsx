@@ -28,6 +28,7 @@ import {
 import { useAuth } from "@/lib/auth";
 import { useBusiness } from "@/lib/business";
 import { CATEGORIES } from "@/lib/categories";
+import { type PushState, usePushSettings } from "@/lib/push";
 import { errorMessage, supabase } from "@/lib/supabase";
 
 interface Member {
@@ -408,7 +409,7 @@ export default function Postavke() {
                   onChangeText={setInviteEmail}
                   autoCapitalize="none"
                   keyboardType="email-address"
-                  hint="Djelatnik instalira aplikaciju i registrira se s tim e-mailom. Odmah vidi ovaj objekt."
+                  hint="Djelatnik otvori app.litowave.hr i registrira se s tim e-mailom. Odmah vidi ovaj objekt."
                 />
                 <Button
                   title="Pozovi"
@@ -429,6 +430,8 @@ export default function Postavke() {
         <ErrorText>{error}</ErrorText>
       ) : null}
 
+      <Notifications />
+
       <View style={s.block}>
         <SectionHeading>Račun</SectionHeading>
         <Body muted>{isAnonymous ? "Demo bez registracije" : session?.user.email}</Body>
@@ -438,6 +441,35 @@ export default function Postavke() {
         <Button title="Odjava" kind="glass" onPress={() => void supabase.auth.signOut()} />
       </View>
     </Screen>
+  );
+}
+
+const pushText: Record<PushState, string> = {
+  on: "Uključeno na ovom uređaju. Za svaku novu rezervaciju stiže obavijest.",
+  off: "Uključi da ti na ovaj uređaj stigne obavijest za svaku novu rezervaciju.",
+  install:
+    "Na iPhoneu obavijesti rade kad je aplikacija na početnom zaslonu: u Safariju dodirni Dijeli, pa Dodaj na početni zaslon. Otvori Lito s početnog zaslona i ovdje uključi obavijesti.",
+  denied:
+    "Obavijesti su zabranjene u postavkama preglednika. Dopusti ih za app.litowave.hr pa se vrati ovdje.",
+  unsupported: "Ovaj preglednik ne prima obavijesti. Nove rezervacije vidiš u kartici Rezervacije.",
+};
+
+/** Obavijesti o novim rezervacijama, za svaki uređaj posebno. */
+function Notifications() {
+  const { state, busy, error, enable, disable, available } = usePushSettings();
+  if (!available) return null;
+  return (
+    <View style={s.block}>
+      <SectionHeading>Obavijesti</SectionHeading>
+      <Body muted>{pushText[state]}</Body>
+      {state === "off" ? (
+        <Button title="Uključi obavijesti" kind="glass" onPress={enable} loading={busy} />
+      ) : null}
+      {state === "on" ? (
+        <Button title="Isključi" kind="text" onPress={disable} loading={busy} />
+      ) : null}
+      <ErrorText>{error}</ErrorText>
+    </View>
   );
 }
 

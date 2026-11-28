@@ -37,6 +37,9 @@ export function BusinessProvider({ children }: { children: ReactNode }) {
   const [memberships, setMemberships] = useState<Membership[]>([]);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  // Za kojeg je korisnika popis učitan. Dok se ne poklopi s prijavljenim, popis se još
+  // učitava (inače bi se odmah nakon prijave ili bez veze otvorio čarobnjak za novi objekt).
+  const [loadedFor, setLoadedFor] = useState<string | null | undefined>(undefined);
   // Najnoviji korisnik, da refresh pozvan odmah nakon prijave (npr. demo) ne vidi starog.
   const userRef = useRef(userId);
   userRef.current = userId;
@@ -46,17 +49,22 @@ export function BusinessProvider({ children }: { children: ReactNode }) {
     if (!userId) {
       setMemberships([]);
       setLoading(false);
+      setLoadedFor(null);
       return;
+    }
+    // Zadnji poznati popis odmah, da se bez signala ne čeka mreža.
+    const cached = await loadJson<Membership[]>(`${CACHE_KEY}.${userId}`);
+    if (cached && userRef.current === userId) {
+      setMemberships(cached);
+      setLoading(false);
+      setLoadedFor(userId);
     }
     const { data, error } = await supabase
       .from("business_members")
       .select("role, business:businesses(*)")
       .eq("user_id", userId);
-    if (error || !data) {
-      // Bez veze: zadnji poznati popis.
-      const cached = await loadJson<Membership[]>(`${CACHE_KEY}.${userId}`);
-      if (cached) setMemberships(cached);
-    } else {
+    if (userRef.current !== userId) return;
+    if (data && !error) {
       const list = data
         .filter((m) => m.business)
         .map((m) => ({ role: m.role, business: m.business as unknown as Business }))
@@ -65,6 +73,7 @@ export function BusinessProvider({ children }: { children: ReactNode }) {
       void saveJson(`${CACHE_KEY}.${userId}`, list);
     }
     setLoading(false);
+    setLoadedFor(userId);
   }, []);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: ponovno učitaj kad se promijeni korisnik
@@ -84,12 +93,12 @@ export function BusinessProvider({ children }: { children: ReactNode }) {
     return {
       memberships,
       active,
-      loading,
+      loading: loading || loadedFor !== userId,
       isOwner: active?.role === "owner",
       setActive,
       refresh,
     };
-  }, [memberships, activeId, loading, setActive, refresh]);
+  }, [memberships, activeId, loading, loadedFor, userId, setActive, refresh]);
 
   return <BusinessContext.Provider value={value}>{children}</BusinessContext.Provider>;
 }

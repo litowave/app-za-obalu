@@ -27,6 +27,11 @@ jobs:
       - run: pnpm --filter @obala/web build
         env:
           NEXT_TELEMETRY_DISABLED: "1"
+      - run: pnpm --filter @obala/renter build
+        env:
+          CI: "1"
+          EXPO_PUBLIC_SUPABASE_URL: http://127.0.0.1:54321
+          EXPO_PUBLIC_SUPABASE_ANON_KEY: ci
 
   database:
     name: Database (migracije + pgTAP)

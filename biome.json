@@ -61,13 +61,11 @@
   "overrides": [
     {
       "includes": ["apps/web/**"],
-      "linter": {
-        "rules": {
-          "correctness": {
-            "noReactNativeRawText": "off"
-          }
-        }
-      }
+      "linter": { "rules": { "correctness": { "noReactNativeRawText": "off" } } }
+    },
+    {
+      "includes": ["supabase/functions/**"],
+      "linter": { "rules": { "suspicious": { "noUndeclaredEnvVars": "off" } } }
     }
   ]
 }

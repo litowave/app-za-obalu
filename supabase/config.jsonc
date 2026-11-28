@@ -484,6 +484,13 @@
     // },
   },
 
+  // Funkciju za slanje push obavijesti zove baza (pg_net) sa svojom tajnom, ne s korisničkim JWT-om.
+  "functions": {
+    "send-push": {
+      "verify_jwt": false
+    }
+  },
+
   "analytics": {
     "enabled": true,
     "port": 54327,

@@ -10,7 +10,7 @@ Aplikacija za iznajmljivače na plaži (ležaljke, suncobrani, cabane, jet ski, 
 ```
 apps/
   web/       Next.js 16 + next-intl (hr, en, de, it)
-  renter/    Expo (iOS, Android, web), Expo Router
+  renter/    web aplikacija za iznajmljivače (Expo Router + react-native-web), app.litowave.hr
 packages/
   core/      zajednička logika bez ovisnosti (numeriranje jedinica, razina gužve) + Vitest
   db/        Supabase klijent i tipovi baze
@@ -28,7 +28,7 @@ Treba: Node 22, pnpm 10, Docker (za lokalni Supabase).
 pnpm install
 pnpm db:start          # lokalni Supabase, ispiše URL i anon ključ
 cp .env.example .env   # upiši vrijednosti iz prethodnog koraka
-pnpm dev               # web na :3000, Expo dev server
+pnpm dev               # turisti na :3000, bilježnica na :8081
 ```
 
 Ostale naredbe: `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm db:reset` (migracije + seed ispočetka), `pnpm db:test` (pgTAP), `pnpm db:types` (regenerira `packages/db/src/database.types.ts`).
@@ -54,7 +54,7 @@ Pravila su opisana u `docs/specifikacija.md`. Ovdje je kratki pregled gdje što 
 
 **Rezervacije turista.** `reservation_availability` kaže je li rezervacija otvorena, `available_units` daje raspored bez podataka o gostima, `request_reservation` provjerava razdoblje, rok dolaska, broj mobitela i blokirane brojeve i vraća token za poveznicu. `reservation_by_token` i `cancel_reservation` služe za "Moja rezervacija". Nakon roka `release_expired_reservations()` (pg_cron, svakih 5 minuta) oslobađa jedinicu.
 
-**Rezervacije u objektu.** Rezervacija iz turističke aplikacije je nova dok je netko u objektu ne pogleda (`bookings.seen_at`, `mark_reservations_seen`). Na kraju transakcije `bookings_notify_new` zapiše jednu push obavijest po grupi u `push_messages` (bez imena i broja gosta) i, ako je uključen `pg_net`, pošalje je preko Expo push servisa na mobitele iz `push_tokens` (`register_push_token`). `move_booking` premješta gosta na drugo mjesto iste vrste, `block_booking_phone` (samo vlasnik) blokira broj koji ne dolazi.
+**Rezervacije u objektu.** Rezervacija iz turističke aplikacije je nova dok je netko u objektu ne pogleda (`bookings.seen_at`, `mark_reservations_seen`). Na kraju transakcije `bookings_notify_new` zapiše jednu push obavijest po grupi u `push_messages` (bez imena i broja gosta) i, ako je uključen `pg_net` i u Vaultu postoje `push_function_url` i `push_function_secret`, pozove funkciju `send-push` koja je pošalje kao web push na preglednike iz `push_tokens` (`register_web_push`, `unregister_web_push`). `move_booking` premješta gosta na drugo mjesto iste vrste, `block_booking_phone` (samo vlasnik) blokira broj koji ne dolazi.
 
 **Prava pristupa.** Ponudu, cijene i postavke mijenja samo vlasnik. Djelatnik bilježi prodaju i rezervacije, ali ne može čitati stupac s cijenom ni izvještaje. Vlasnik iznose vidi kroz `booking_amounts`, `report_daily` i `report_season`.
 
@@ -79,9 +79,17 @@ Demo prijave (lozinka `obala123`): `cabana@demo.local` vlasnik, `djelatnik@demo.
 
 **Rad bez signala.** Svaka promjena ide u red čekanja spremljen na uređaju (`packages/core/src/outbox.ts`) i odmah se vidi. Red se šalje redom kad se veza vrati; prodaja napravljena bez veze dobiva privremeni id, pa "Oslobodi" ili "Poništi" na njoj rade i prije slanja. Ako baza odbije promjenu (mjesto je u međuvremenu rezervirano preko aplikacije), aplikacija to javi i promjena se makne.
 
-**Push obavijesti.** Rade na pravom mobitelu u buildu s EAS projektom (`extra.eas.projectId` u `app.json`, dodaje ga `eas init`). U Expo Go, na webu i u demo načinu mobitel se ne prijavljuje, a sve ostalo radi normalno.
+**Web aplikacija.** Nema App Storea ni Google Playa: `pnpm --filter @obala/renter build` izveze statičnu stranicu u `apps/renter/dist` (`expo export --platform web`, pa `scripts/precache.mjs` upiše popis datoteka i verziju u `sw.js`). `apps/renter/vercel.json` je postavka za Vercel projekt s korijenom `apps/renter` i domenom `app.litowave.hr`: sve adrese vode na `index.html`, `sw.js` se ne sprema u predmemoriju. U `public/` su manifest, ikone i service worker (`sw.js`): aplikacija se može dodati na početni zaslon i otvara se bez signala.
 
-Pokretanje: `pnpm --filter @obala/renter dev` (Expo Go ili web), uz `EXPO_PUBLIC_SUPABASE_URL` i `EXPO_PUBLIC_SUPABASE_ANON_KEY` u `.env`.
+**Push obavijesti (web push).** Postavljanje jednom:
+1. `npx web-push generate-vapid-keys`
+2. Javni ključ u `EXPO_PUBLIC_VAPID_PUBLIC_KEY` (postavka izrade aplikacije).
+3. `supabase secrets set VAPID_PUBLIC_KEY=... VAPID_PRIVATE_KEY=... VAPID_SUBJECT=mailto:info@litowave.hr PUSH_FUNCTION_SECRET=<dugi slučajni niz>` i `supabase functions deploy send-push`.
+4. U Vaultu (SQL editor): `select vault.create_secret('https://<projekt>.supabase.co/functions/v1/send-push', 'push_function_url'); select vault.create_secret('<isti niz>', 'push_function_secret');`, i uključen `pg_net`.
+
+Obavijesti se uključuju u Postavkama za svaki uređaj. Na iPhoneu rade tek kad je aplikacija dodana na početni zaslon. U demo načinu se ne nude. Dok ključevi nisu postavljeni, obavijest se samo zapiše u `push_messages`, a sve ostalo radi normalno.
+
+Pokretanje: `pnpm --filter @obala/renter dev` (otvara se u pregledniku), uz `EXPO_PUBLIC_SUPABASE_URL` i `EXPO_PUBLIC_SUPABASE_ANON_KEY` u `.env`.
 
 ## Što slijedi
 
