@@ -7,11 +7,12 @@
     "title": "Cosa c'è nei dintorni",
     "lead": "Lettini, ombrelloni, moto d'acqua, pedalò e parchi acquatici intorno a te, con l'affollamento in tempo reale.",
     "crowd": {
-      "low": "Tranquillo",
-      "medium": "Moderato",
-      "high": "Affollato",
-      "full": "Pieno",
-      "unknown": "Nessun dato"
+      "no_data": "Nessun dato in tempo reale",
+      "empty": "Vuoto",
+      "few": "Poca gente",
+      "moderate": "Moderato",
+      "busy": "Affollato",
+      "full": "Pieno"
     }
   }
 }

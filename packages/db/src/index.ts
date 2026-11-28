@@ -10,12 +10,19 @@ type Enums = Database["public"]["Enums"];
 export type Business = Tables["businesses"]["Row"];
 export type ItemType = Tables["item_types"]["Row"];
 export type Unit = Tables["units"]["Row"];
+export type ItemTypeSlot = Tables["item_type_slots"]["Row"];
 export type Booking = Tables["bookings"]["Row"];
 export type BookingStatus = Enums["booking_status"];
+export type BookingSource = Enums["booking_source"];
 export type BusinessCategory = Enums["business_category"];
+export type PaymentMethod = Enums["payment_method"];
+export type AssignmentMode = Enums["assignment_mode"];
+export type CrowdLevel = Enums["crowd_level"];
+export type MemberRole = Enums["member_role"];
 export type NearbyBusiness =
   Database["public"]["Functions"]["nearby_businesses"]["Returns"][number];
 export type DailyReportRow = Database["public"]["Views"]["report_daily"]["Row"];
+export type SeasonReportRow = Database["public"]["Views"]["report_season"]["Row"];
 
 export function createClient(
   url: string,

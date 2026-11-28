@@ -7,11 +7,12 @@
     "title": "Što se nudi u blizini",
     "lead": "Ležaljke, suncobrani, jet ski, pedaline i aquaparkovi oko tebe, s gužvom uživo.",
     "crowd": {
-      "low": "Slobodno",
-      "medium": "Umjereno",
-      "high": "Gužva",
-      "full": "Popunjeno",
-      "unknown": "Nema podataka"
+      "no_data": "Nema podataka uživo",
+      "empty": "Prazno",
+      "few": "Malo ljudi",
+      "moderate": "Umjereno",
+      "busy": "Gužva",
+      "full": "Popunjeno"
     }
   }
 }
