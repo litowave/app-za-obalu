@@ -88,5 +88,60 @@
       "sun": "So"
     },
     "sunset": "Sonnenuntergang"
+  },
+  "reserve": {
+    "button": "Reservieren",
+    "title": "Reservierung",
+    "what": "Was möchten Sie reservieren?",
+    "date": "Datum",
+    "today": "Heute",
+    "tomorrow": "Morgen",
+    "slot": "Tageszeit",
+    "place": "Platz wählen",
+    "placeHint": "Graue sind belegt. Sie können mehrere wählen.",
+    "quantity": "Wie viele?",
+    "free": "{count} frei",
+    "none": "Für diesen Tag ist nichts mehr frei.",
+    "notYetOpen": "Reservierungen für diesen Tag öffnen {when}.",
+    "closed": "Für diesen Tag sind Reservierungen geschlossen. Kommen Sie einfach vorbei.",
+    "unavailable": "Dies kann derzeit nicht reserviert werden.",
+    "name": "Vor- und Nachname",
+    "phone": "Handynummer",
+    "phoneHint": "Der Anbieter kann Sie bei Bedarf anrufen.",
+    "price": "Richtpreis: {price}. Bezahlung vor Ort.",
+    "terms": "Ich verstehe, dass die Reservierung automatisch verfällt, wenn ich nicht bis {time} da bin.",
+    "termsNoHold": "Ich verstehe, dass ich absagen sollte, wenn ich nicht komme.",
+    "submit": "Reservierung senden",
+    "sending": "Wird gesendet…",
+    "loading": "Freie Plätze werden geprüft…",
+    "err": {
+      "generic": "Die Reservierung hat nicht geklappt. Bitte erneut versuchen.",
+      "taken": "Dieser Platz wurde gerade vergeben. Bitte einen anderen wählen.",
+      "samePhone": "Mit dieser Nummer haben Sie für diesen Tag bereits eine Reservierung.",
+      "blocked": "Mit dieser Nummer ist keine Reservierung möglich. Bitte rufen Sie an.",
+      "closed": "Für diesen Tag sind Reservierungen geschlossen. Kommen Sie einfach vorbei.",
+      "full": "Für diesen Tag sind nicht genug Plätze frei.",
+      "input": "Bitte Namen und Handynummer eingeben."
+    }
+  },
+  "my": {
+    "title": "Ihre Reservierung",
+    "status": {
+      "reserved": "Bestätigt",
+      "sold": "Sie sind angekommen, viel Spaß!",
+      "expired": "Verfallen, die Ankunftszeit ist vorbei",
+      "cancelled": "Storniert"
+    },
+    "places": "Plätze",
+    "date": "Datum",
+    "arriveBy": "Kommen Sie bis {time}, sonst verfällt die Reservierung automatisch.",
+    "save": "Speichern Sie diese Seite. Hier sehen und stornieren Sie die Reservierung.",
+    "cancel": "Reservierung stornieren",
+    "cancelAsk": "Wirklich stornieren? Der Platz wird sofort für andere Gäste frei.",
+    "cancelYes": "Ja, stornieren",
+    "keep": "Nein",
+    "calendar": "Zum Kalender hinzufügen",
+    "notFound": "Reservierung nicht gefunden. Bitte den Link prüfen.",
+    "cancelFailed": "Diese Reservierung kann nicht mehr storniert werden."
   }
 }

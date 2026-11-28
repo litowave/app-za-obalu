@@ -117,7 +117,7 @@ export function MapView({ center, initialOffer }: Props) {
         style: MAP_STYLE,
         ...(center
           ? { center: [center.lng, center.lat] as [number, number], zoom: 11.5 }
-          : { bounds: COAST_BOUNDS, fitBoundsOptions: { padding: 24 } }),
+          : { bounds: COAST_BOUNDS, fitBoundsOptions: { padding: 12 } }),
         minZoom: 5,
         maxZoom: 18,
         attributionControl: { compact: true },
@@ -195,7 +195,11 @@ export function MapView({ center, initialOffer }: Props) {
         markers.current.set(b.id, mk);
       }
       const el = mk.getElement();
-      el.className = `pin crowd-${b.crowd}${b.id === selectedId ? " selected" : ""}`;
+      // MapLibre oznaci daje svoju klasu (position: absolute); ne smije se pregaziti.
+      el.classList.add("pin");
+      for (const c of [...el.classList]) if (c.startsWith("crowd-")) el.classList.remove(c);
+      el.classList.add(`crowd-${b.crowd}`);
+      el.classList.toggle("selected", b.id === selectedId);
       el.setAttribute("aria-label", `${b.name}, ${t(`crowd.${b.crowd}`)}`);
     }
   }, [visible, selectedId, t]);
@@ -408,7 +412,11 @@ export function MapView({ center, initialOffer }: Props) {
         <section className="sheet lito-card" aria-label={selected.name}>
           <div className="sheet-head">
             <div>
-              <h2>{selected.name}</h2>
+              <h2>
+                <Link href={`/o/${selected.slug}`} className="title-link">
+                  {selected.name}
+                </Link>
+              </h2>
               <p className="meta">
                 {[
                   selected.offers.slice(0, 3).join(", ") || selected.place,
@@ -439,9 +447,15 @@ export function MapView({ center, initialOffer }: Props) {
             <span className="tag">{t("map.reservable")}</span>
           ) : null}
           <div className="sheet-actions">
-            <Link className="lito-btn" href={`/o/${selected.slug}`}>
-              {t("map.more")}
-            </Link>
+            {selected.reservations_enabled ? (
+              <Link className="lito-btn" href={`/o/${selected.slug}/rezerviraj`}>
+                {t("reserve.button")}
+              </Link>
+            ) : (
+              <Link className="lito-btn" href={`/o/${selected.slug}`}>
+                {t("map.more")}
+              </Link>
+            )}
             <a
               className="lito-btn ghost"
               href={directionsUrl(selected.lat, selected.lng)}

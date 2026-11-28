@@ -22,6 +22,8 @@ export type CrowdLevel = Enums["crowd_level"];
 export type MemberRole = Enums["member_role"];
 export type NearbyBusiness =
   Database["public"]["Functions"]["nearby_businesses"]["Returns"][number];
+export type ReservationByToken =
+  Database["public"]["Functions"]["reservation_by_token"]["Returns"][number];
 export type MapBusiness = Database["public"]["Functions"]["map_businesses"]["Returns"][number];
 export type PriceUnit = Enums["price_unit"];
 
@@ -58,7 +60,9 @@ export interface PublicOffer {
   price_unit: PriceUnit;
   duration_min: number | null;
   reservable: boolean;
+  assignment_mode: AssignmentMode;
   slots: {
+    id: string;
     name: string;
     starts_at: string;
     ends_at: string | null;

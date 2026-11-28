@@ -88,5 +88,60 @@
       "sun": "Ned"
     },
     "sunset": "zalazak"
+  },
+  "reserve": {
+    "button": "Rezerviraj",
+    "title": "Rezervacija",
+    "what": "Što rezervirate?",
+    "date": "Datum",
+    "today": "Danas",
+    "tomorrow": "Sutra",
+    "slot": "Dio dana",
+    "place": "Odaberite mjesto",
+    "placeHint": "Sive su zauzete. Možete odabrati više mjesta.",
+    "quantity": "Koliko?",
+    "free": "{count, plural, one {# slobodno} few {# slobodna} other {# slobodnih}}",
+    "none": "Za taj dan nema slobodnih mjesta.",
+    "notYetOpen": "Rezervacije za ovaj dan otvaraju se {when}.",
+    "closed": "Za ovaj dan rezervacije su zatvorene. Dođite izravno.",
+    "unavailable": "Ova ponuda se trenutno ne može rezervirati.",
+    "name": "Ime i prezime",
+    "phone": "Broj mobitela",
+    "phoneHint": "Objekt vas može nazvati ako bude potrebno.",
+    "price": "Cijena za orijentaciju: {price}. Plaćanje na licu mjesta.",
+    "terms": "Razumijem da se rezervacija automatski poništava ako ne dođem do {time}.",
+    "termsNoHold": "Razumijem da rezervaciju trebam otkazati ako ne dolazim.",
+    "submit": "Pošalji rezervaciju",
+    "sending": "Šaljem…",
+    "loading": "Provjeravam slobodna mjesta…",
+    "err": {
+      "generic": "Rezervacija nije uspjela. Pokušajte ponovno.",
+      "taken": "Odabrano mjesto je upravo zauzeto. Odaberite drugo.",
+      "samePhone": "S ovim brojem već imate rezervaciju za taj dan.",
+      "blocked": "Rezervacija s ovim brojem nije moguća. Nazovite objekt.",
+      "closed": "Za ovaj dan rezervacije su zatvorene. Dođite izravno.",
+      "full": "Nema dovoljno slobodnih mjesta za taj dan.",
+      "input": "Upišite ime i broj mobitela."
+    }
+  },
+  "my": {
+    "title": "Vaša rezervacija",
+    "status": {
+      "reserved": "Potvrđeno",
+      "sold": "Stigli ste, uživajte!",
+      "expired": "Poništeno jer rok dolaska je prošao",
+      "cancelled": "Otkazano"
+    },
+    "places": "Mjesta",
+    "date": "Datum",
+    "arriveBy": "Dođite do {time}, inače se rezervacija sama poništava.",
+    "save": "Spremite ovu stranicu. Preko nje vidite i otkazujete rezervaciju.",
+    "cancel": "Otkaži rezervaciju",
+    "cancelAsk": "Sigurno otkazati? Mjesto se odmah oslobađa za druge goste.",
+    "cancelYes": "Da, otkaži",
+    "keep": "Ne",
+    "calendar": "Dodaj u kalendar",
+    "notFound": "Rezervacija nije pronađena. Provjerite poveznicu.",
+    "cancelFailed": "Rezervaciju više nije moguće otkazati."
   }
 }

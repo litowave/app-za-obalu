@@ -88,5 +88,60 @@
       "sun": "Dom"
     },
     "sunset": "tramonto"
+  },
+  "reserve": {
+    "button": "Prenota",
+    "title": "Prenotazione",
+    "what": "Cosa volete prenotare?",
+    "date": "Data",
+    "today": "Oggi",
+    "tomorrow": "Domani",
+    "slot": "Fascia oraria",
+    "place": "Scegliete il posto",
+    "placeHint": "Quelli grigi sono occupati. Potete sceglierne più di uno.",
+    "quantity": "Quanti?",
+    "free": "{count} liberi",
+    "none": "Nessun posto libero per quel giorno.",
+    "notYetOpen": "Le prenotazioni per questo giorno aprono {when}.",
+    "closed": "Le prenotazioni per oggi sono chiuse. Venite direttamente.",
+    "unavailable": "Al momento non è prenotabile.",
+    "name": "Nome e cognome",
+    "phone": "Numero di cellulare",
+    "phoneHint": "Il locale potrebbe chiamarvi se necessario.",
+    "price": "Prezzo indicativo: {price}. Pagamento sul posto.",
+    "terms": "Capisco che la prenotazione si annulla automaticamente se non arrivo entro le {time}.",
+    "termsNoHold": "Capisco che devo annullare se non vengo.",
+    "submit": "Invia prenotazione",
+    "sending": "Invio…",
+    "loading": "Controllo dei posti liberi…",
+    "err": {
+      "generic": "La prenotazione non è riuscita. Riprovate.",
+      "taken": "Quel posto è stato appena preso. Sceglietene un altro.",
+      "samePhone": "Con questo numero avete già una prenotazione per quel giorno.",
+      "blocked": "Con questo numero non è possibile prenotare. Chiamate il locale.",
+      "closed": "Le prenotazioni per questo giorno sono chiuse. Venite direttamente.",
+      "full": "Non ci sono abbastanza posti liberi per quel giorno.",
+      "input": "Inserite nome e numero di cellulare."
+    }
+  },
+  "my": {
+    "title": "La vostra prenotazione",
+    "status": {
+      "reserved": "Confermata",
+      "sold": "Siete arrivati, buon divertimento!",
+      "expired": "Annullata, l'orario di arrivo è passato",
+      "cancelled": "Annullata"
+    },
+    "places": "Posti",
+    "date": "Data",
+    "arriveBy": "Arrivate entro le {time}, altrimenti la prenotazione si annulla automaticamente.",
+    "save": "Salvate questa pagina. Qui vedete e annullate la prenotazione.",
+    "cancel": "Annulla prenotazione",
+    "cancelAsk": "Annullare davvero? Il posto si libera subito per altri ospiti.",
+    "cancelYes": "Sì, annulla",
+    "keep": "No",
+    "calendar": "Aggiungi al calendario",
+    "notFound": "Prenotazione non trovata. Controllate il link.",
+    "cancelFailed": "Questa prenotazione non può più essere annullata."
   }
 }
