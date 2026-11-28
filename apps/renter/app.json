@@ -3,7 +3,7 @@
     "name": "Lito bilježnica",
     "slug": "obala-partner",
     "version": "1.0.0",
-    "orientation": "portrait",
+    "orientation": "default",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
     "ios": {
@@ -24,7 +24,16 @@
       "favicon": "./assets/favicon.png"
     },
     "scheme": "obala-partner",
-    "plugins": ["expo-router", "expo-font"],
+    "plugins": [
+      "expo-router",
+      "expo-font",
+      [
+        "expo-notifications",
+        {
+          "color": "#1F5A55"
+        }
+      ]
+    ],
     "experiments": {
       "typedRoutes": true
     }

@@ -3,6 +3,12 @@ import * as Location from "expo-location";
 import { useCallback, useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import {
+  BookingRulesEditor,
+  draftFromRules,
+  type RulesDraft,
+  rulesFromDraft,
+} from "@/components/BookingRulesEditor";
+import {
   Body,
   Button,
   Card,
@@ -58,10 +64,15 @@ export default function Postavke() {
   });
   const [busy, setBusy] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [errorFor, setErrorFor] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
   const [members, setMembers] = useState<Member[]>([]);
   const [invites, setInvites] = useState<Invite[]>([]);
   const [inviteEmail, setInviteEmail] = useState("");
+  const [resEnabled, setResEnabled] = useState(false);
+  const [resNote, setResNote] = useState("");
+  const [rules, setRules] = useState<RulesDraft | null>(null);
+  const [resSaved, setResSaved] = useState(false);
 
   useEffect(() => {
     if (!b) return;
@@ -73,6 +84,16 @@ export default function Postavke() {
       description: b.description ?? "",
       website: b.website ?? "",
     });
+    setResEnabled(b.reservations_enabled);
+    setResNote(b.reservation_note ?? "");
+    setRules(
+      draftFromRules({
+        hold_until: b.reservation_hold_until,
+        opens_days_before: b.booking_opens_days_before,
+        opens_at: b.booking_opens_at,
+        closes_at: b.booking_closes_at,
+      }),
+    );
   }, [b]);
 
   const loadTeam = useCallback(async () => {
@@ -102,6 +123,7 @@ export default function Postavke() {
     if (!b) return;
     setBusy(key);
     setError(null);
+    setErrorFor(key);
     const { error: e } = await supabase
       .from("businesses")
       .update(patch as never)
@@ -127,6 +149,29 @@ export default function Postavke() {
     if (ok) {
       setSaved(true);
       setTimeout(() => setSaved(false), 2000);
+    }
+  }
+
+  async function saveReservations() {
+    if (!rules) return;
+    const parsed = rulesFromDraft(rules);
+    if ("error" in parsed) {
+      setErrorFor("reservations");
+      setError(parsed.error);
+      return;
+    }
+    const r = parsed.rules;
+    const ok = await update("reservations", {
+      reservations_enabled: resEnabled,
+      reservation_hold_until: r.holdUntil,
+      booking_opens_days_before: r.opensDaysBefore,
+      booking_opens_at: r.opensAt,
+      booking_closes_at: r.closesAt,
+      reservation_note: resNote.trim() || null,
+    });
+    if (ok) {
+      setResSaved(true);
+      setTimeout(() => setResSaved(false), 2000);
     }
   }
 
@@ -256,6 +301,43 @@ export default function Postavke() {
           </View>
 
           <View style={s.block}>
+            <SectionHeading>Rezervacije</SectionHeading>
+            <Body muted>
+              Zadana pravila za cijeli objekt. Za pojedini predmet (npr. cabane) rezervacije se
+              posebno uključuju u Predmetima, gdje se mogu postaviti i drugačiji rok i razdoblje.
+            </Body>
+            <Row>
+              <Chip label="Uključene" selected={resEnabled} onPress={() => setResEnabled(true)} />
+              <Chip
+                label="Isključene"
+                selected={!resEnabled}
+                onPress={() => setResEnabled(false)}
+              />
+            </Row>
+            {resEnabled && rules ? (
+              <>
+                <BookingRulesEditor value={rules} onChange={setRules} />
+                <Field
+                  label="Napomena za gosta"
+                  value={resNote}
+                  onChangeText={setResNote}
+                  placeholder="npr. Plaćanje gotovinom ili karticom na ulazu."
+                  multiline
+                  hint="Turist je vidi prije slanja rezervacije i mora potvrditi da je razumije."
+                />
+              </>
+            ) : null}
+            <Button
+              title={resSaved ? "Spremljeno" : "Spremi pravila rezervacija"}
+              accessibilityHint="Sprema rok dolaska i razdoblje za rezervacije"
+              onPress={saveReservations}
+              loading={busy === "reservations"}
+              block
+            />
+            {errorFor === "reservations" ? <ErrorText>{error}</ErrorText> : null}
+          </View>
+
+          <View style={s.block}>
             <SectionHeading>Tim</SectionHeading>
             <Body muted>
               Djelatnik bilježi prodaju i rezervacije. Ne vidi prihode ni izvještaje i ne mijenja
@@ -302,7 +384,7 @@ export default function Postavke() {
         <Body muted>Ti si djelatnik u objektu {b.name}. Postavke mijenja vlasnik.</Body>
       )}
 
-      <ErrorText>{error}</ErrorText>
+      {errorFor !== "reservations" ? <ErrorText>{error}</ErrorText> : null}
 
       <View style={s.block}>
         <SectionHeading>Račun</SectionHeading>

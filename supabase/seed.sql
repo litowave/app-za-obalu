@@ -59,6 +59,10 @@ values
   ('b0000000-0000-0000-0000-000000000005', 'a0000000-0000-0000-0000-000000000003', 'Ležaljka', 'lounger', 'number', 'L',  1200, 'day',     false, 'auto',         null, null, null, null, 1),
   ('b0000000-0000-0000-0000-000000000006', 'a0000000-0000-0000-0000-000000000003', 'Pedalina', 'pedalo',  'number', 'P',  2000, 'hour',    false, 'auto',         null, null, null, 60,   2);
 
+-- Cabane imaju svoj rok dolaska (12:00), ostalo vrijedi kao za objekt (6.2.2).
+update public.item_types set reservation_hold_until = '12:00'
+where id = 'b0000000-0000-0000-0000-000000000001';
+
 -- Dijelovi dana za cabane (6.1.3). Cijene polovica su primjer, vlasnik ih mijenja.
 insert into public.item_type_slots (id, item_type_id, name, starts_at, ends_at, price_cents, reservable, sort_order) values
   ('e0000000-0000-0000-0000-000000000001', 'b0000000-0000-0000-0000-000000000001', 'Cijeli dan',  '09:00', null,    8000, true,  1),
@@ -86,3 +90,19 @@ join public.item_types t on t.id = u.item_type_id
 join public.businesses b on b.id = t.business_id
 where (t.id = 'b0000000-0000-0000-0000-000000000002' and u.position <= 21)
    or (t.id = 'b0000000-0000-0000-0000-000000000005' and u.position <= 12);
+
+-- Rezervacije za sutra u Primošten Cabani: jedna nova iz turističke aplikacije, jedna telefonom.
+insert into public.bookings (unit_id, service_date, slot_id, status, source, customer_name, customer_phone,
+                             group_id, public_token)
+select u.id, (now() at time zone 'Europe/Zagreb')::date + 1, 'e0000000-0000-0000-0000-000000000001',
+       'reserved', 'tourist_app', 'Anna Müller', '+49 151 2345678',
+       '90000000-0000-0000-0000-000000000001', 'demo-token-anna'
+from public.units u
+where u.item_type_id = 'b0000000-0000-0000-0000-000000000001' and u.position = 3;
+
+insert into public.bookings (unit_id, service_date, slot_id, status, source, customer_name, customer_phone, created_by)
+select u.id, (now() at time zone 'Europe/Zagreb')::date + 1, 'e0000000-0000-0000-0000-000000000002',
+       'reserved', 'phone', 'Marko Perić', '091 234 5678', b.owner_id
+from public.units u
+join public.businesses b on b.id = u.business_id
+where u.item_type_id = 'b0000000-0000-0000-0000-000000000001' and u.position = 5;

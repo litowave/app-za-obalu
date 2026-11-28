@@ -54,6 +54,7 @@ export type Database = {
           price_cents: number | null;
           public_token: string | null;
           released_at: string | null;
+          seen_at: string | null;
           service_date: string;
           slot_id: string | null;
           source: Database["public"]["Enums"]["booking_source"];
@@ -81,6 +82,7 @@ export type Database = {
           price_cents?: number | null;
           public_token?: string | null;
           released_at?: string | null;
+          seen_at?: string | null;
           service_date: string;
           slot_id?: string | null;
           source?: Database["public"]["Enums"]["booking_source"];
@@ -107,6 +109,7 @@ export type Database = {
           price_cents?: number | null;
           public_token?: string | null;
           released_at?: string | null;
+          seen_at?: string | null;
           service_date?: string;
           slot_id?: string | null;
           source?: Database["public"]["Enums"]["booking_source"];
@@ -554,6 +557,51 @@ export type Database = {
         };
         Relationships: [];
       };
+      push_messages: {
+        Row: {
+          body: string;
+          business_id: string;
+          created_at: string;
+          data: NonNullable<Json>;
+          group_id: string;
+          id: number;
+          request_id: number | null;
+          title: string;
+          tokens: string[];
+        };
+        ComputedFields: never;
+        Insert: {
+          body: string;
+          business_id: string;
+          created_at?: string;
+          data?: NonNullable<Json>;
+          group_id: string;
+          id?: never;
+          request_id?: number | null;
+          title: string;
+          tokens: string[];
+        };
+        Update: {
+          body?: string;
+          business_id?: string;
+          created_at?: string;
+          data?: NonNullable<Json>;
+          group_id?: string;
+          id?: never;
+          request_id?: number | null;
+          title?: string;
+          tokens?: string[];
+        };
+        Relationships: [
+          {
+            foreignKeyName: "push_messages_business_id_fkey";
+            columns: ["business_id"];
+            isOneToOne: false;
+            referencedRelation: "businesses";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       push_tokens: {
         Row: {
           business_id: string;
@@ -840,6 +888,7 @@ export type Database = {
           unit_position: number;
         }[];
       };
+      block_booking_phone: { Args: { p_booking_id: string; p_note?: string }; Returns: string };
       booking_window: {
         Args: { p_date: string; p_item_type_id: string };
         Returns: {
@@ -882,6 +931,7 @@ export type Database = {
         Args: { p_occupied: number; p_total: number };
         Returns: Database["public"]["Enums"]["crowd_level"];
       };
+      day_label: { Args: { p_date: string }; Returns: string };
       effective_booking_rules: {
         Args: { p_item_type_id: string };
         Returns: {
@@ -906,6 +956,8 @@ export type Database = {
       is_business_owner: { Args: { p_business_id: string }; Returns: boolean };
       is_platform_admin: { Args: Record<PropertyKey, never>; Returns: boolean };
       local_midnight: { Args: { d: string }; Returns: string };
+      mark_reservations_seen: { Args: { p_business_id: string }; Returns: number };
+      move_booking: { Args: { p_booking_id: string; p_unit_id: string }; Returns: undefined };
       nearby_businesses: {
         Args: { p_lat: number; p_lng: number; p_radius_m?: number };
         Returns: {
@@ -932,6 +984,7 @@ export type Database = {
         }[];
       };
       purge_guest_data: { Args: Record<PropertyKey, never>; Returns: number };
+      queue_reservation_push: { Args: { p_group_id: string }; Returns: number };
       record_reservation: {
         Args: {
           p_customer_name: string;
@@ -969,6 +1022,10 @@ export type Database = {
         }[];
       };
       refresh_popular_times: { Args: Record<PropertyKey, never>; Returns: number };
+      register_push_token: {
+        Args: { p_business_id: string; p_platform: string; p_token: string };
+        Returns: boolean;
+      };
       release_booking: { Args: { p_booking_id: string }; Returns: undefined };
       release_expired_reservations: { Args: Record<PropertyKey, never>; Returns: number };
       request_reservation: {

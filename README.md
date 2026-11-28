@@ -54,6 +54,8 @@ Pravila su opisana u `docs/specifikacija.md`. Ovdje je kratki pregled gdje što 
 
 **Rezervacije turista.** `reservation_availability` kaže je li rezervacija otvorena, `available_units` daje raspored bez podataka o gostima, `request_reservation` provjerava razdoblje, rok dolaska, broj mobitela i blokirane brojeve i vraća token za poveznicu. `reservation_by_token` i `cancel_reservation` služe za "Moja rezervacija". Nakon roka `release_expired_reservations()` (pg_cron, svakih 5 minuta) oslobađa jedinicu.
 
+**Rezervacije u objektu.** Rezervacija iz turističke aplikacije je nova dok je netko u objektu ne pogleda (`bookings.seen_at`, `mark_reservations_seen`). Na kraju transakcije `bookings_notify_new` zapiše jednu push obavijest po grupi u `push_messages` (bez imena i broja gosta) i, ako je uključen `pg_net`, pošalje je preko Expo push servisa na mobitele iz `push_tokens` (`register_push_token`). `move_booking` premješta gosta na drugo mjesto iste vrste, `block_booking_phone` (samo vlasnik) blokira broj koji ne dolazi.
+
 **Prava pristupa.** Ponudu, cijene i postavke mijenja samo vlasnik. Djelatnik bilježi prodaju i rezervacije, ali ne može čitati stupac s cijenom ni izvještaje. Vlasnik iznose vidi kroz `booking_amounts`, `report_daily` i `report_season`.
 
 **Gužva.** `nearby_businesses` turistu vraća samo razinu (`no_data`, `empty`, `few`, `moderate`, `busy`, `full`). `business_popular_times` daje razinu po satu iz zadnja četiri tjedna (osvježava se noću), tek kad postoje dva tjedna podataka.
@@ -69,10 +71,13 @@ Demo prijave (lozinka `obala123`): `cabana@demo.local` vlasnik, `djelatnik@demo.
 | Prijava | E-mail i lozinka, poveznica na e-mail, "Isprobaj bez registracije" (anonimna prijava + `create_demo_business`, plaža s cijelom prošlom sezonom) |
 | Čarobnjak | Tri koraka nakon registracije: objekt, lokacija (trenutna pozicija), prva ponuda |
 | Danas | Mreža mjesta po vrsti i dijelu dana. Dodir otvara list: prodano gotovina ili kartica (i na više dana), rezerviraj, gost je stigao, oslobodi, poništi. "Poništi" u obavijesti nekoliko sekundi. Dugi pritisak ili "Odaberi više mjesta" za obitelj. Satni najam (jet ski, pedaline) kao popis s odbrojavanjem i "Vraćeno". Vlasnik vidi prihod danas, djelatnik ne. Gumb sa suncem za jako sunce |
-| Predmeti | Padajući izbornik po skupinama s "Vlastiti naziv…", broj komada, oznaka, numeriranje, cijena, pregled oznaka s preimenovanjem prije spremanja. Uređivanje: cijena, broj komada (smanjenje samo deaktivira), preimenovanje, uklanjanje |
-| Postavke | Profil objekta, lokacija, zahtjev za objavu na karti, tim (pozivnica po e-mailu), odjava |
+| Rezervacije | Danas i sljedećih 14 dana, po roku dolaska. Ime, mjesta, dio dana, rok, izvor, telefon (dodir zove). Nove iz turističke aplikacije imaju oznaku "Nova" i broj na kartici. List: gost je stigao (gotovina ili kartica), premjesti, otkaži, blokiraj broj (vlasnik) |
+| Predmeti | Padajući izbornik po skupinama s "Vlastiti naziv…", broj komada, oznaka, numeriranje, cijena, pregled oznaka s preimenovanjem prije spremanja. Uređivanje: cijena, broj komada (smanjenje samo deaktivira), preimenovanje, dijelovi dana (do sata ili do zalaska, cijena, može li se rezervirati), rezervacije (uključeno, tko bira mjesto, rok i razdoblje kao objekt ili posebno), uklanjanje |
+| Postavke | Profil objekta, lokacija, zahtjev za objavu na karti, rezervacije (uključene, rok dolaska, kada se otvaraju i zatvaraju, napomena za gosta; provjera da zatvaranje nije nakon roka), tim (pozivnica po e-mailu), odjava |
 
 **Rad bez signala.** Svaka promjena ide u red čekanja spremljen na uređaju (`packages/core/src/outbox.ts`) i odmah se vidi. Red se šalje redom kad se veza vrati; prodaja napravljena bez veze dobiva privremeni id, pa "Oslobodi" ili "Poništi" na njoj rade i prije slanja. Ako baza odbije promjenu (mjesto je u međuvremenu rezervirano preko aplikacije), aplikacija to javi i promjena se makne.
+
+**Push obavijesti.** Rade na pravom mobitelu u buildu s EAS projektom (`extra.eas.projectId` u `app.json`, dodaje ga `eas init`). U Expo Go, na webu i u demo načinu mobitel se ne prijavljuje, a sve ostalo radi normalno.
 
 Pokretanje: `pnpm --filter @obala/renter dev` (Expo Go ili web), uz `EXPO_PUBLIC_SUPABASE_URL` i `EXPO_PUBLIC_SUPABASE_ANON_KEY` u `.env`.
 
