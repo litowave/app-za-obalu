@@ -40,6 +40,7 @@ function Gate() {
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="prijava" />
         <Stack.Screen name="carobnjak" />
+        <Stack.Screen name="radni-dan" />
       </Stack>
       {busy ? (
         <View

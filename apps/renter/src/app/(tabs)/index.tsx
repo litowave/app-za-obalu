@@ -14,6 +14,7 @@ import {
   zagrebToday,
 } from "@obala/core";
 import type { ItemType, ItemTypeSlot, Unit } from "@obala/db";
+import { useRouter } from "expo-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -52,11 +53,12 @@ function useNow(intervalMs = 15000) {
 }
 
 export default function Danas() {
-  const { active, isOwner } = useBusiness();
+  const { active } = useBusiness();
+  const router = useRouter();
   const { sunMode, toggle: toggleSun } = useSun();
   const today = zagrebToday();
   const [date, setDate] = useState(today);
-  const nb = useNotebook(active?.business.id ?? null, date, isOwner);
+  const nb = useNotebook(active?.business.id ?? null, date);
   const now = useNow();
 
   const [typeId, setTypeId] = useState<string | null>(null);
@@ -206,17 +208,25 @@ export default function Danas() {
           <Banner>Demo objekt s izmišljenim podacima. Slobodno klikaj.</Banner>
         ) : null}
 
-        {isOwner && nb.revenue && date === today ? (
-          <Card style={s.revenue}>
-            <View>
-              <Text style={s.small}>Prihod danas</Text>
-              <Text style={s.big}>{formatEur(nb.revenue.total)}</Text>
-            </View>
-            <Text style={s.split}>
-              Gotovina {formatEur(nb.revenue.cash)}
-              {"\n"}Kartica {formatEur(nb.revenue.card)}
-            </Text>
-          </Card>
+        {nb.revenue && date === today ? (
+          <Pressable
+            onPress={() => router.push("/radni-dan")}
+            accessibilityRole="button"
+            accessibilityLabel={`Promet danas ${formatEur(nb.revenue.total)}. Otvori radni dan i blagajnu`}
+          >
+            <Card style={s.revenue}>
+              <View>
+                <Text style={s.small}>Promet danas</Text>
+                <Text style={s.big}>{formatEur(nb.revenue.total)}</Text>
+              </View>
+              <Text style={s.split}>
+                Gotovina {formatEur(nb.revenue.cash)}
+                {"\n"}Kartica {formatEur(nb.revenue.card)}
+                {"\n"}
+                <Text style={s.link}>Blagajna ›</Text>
+              </Text>
+            </Card>
+          </Pressable>
         ) : null}
 
         <Row gap={space.s}>
@@ -646,6 +656,7 @@ const s = StyleSheet.create({
     textAlign: "right",
     lineHeight: 21,
   },
+  link: { fontFamily: fonts.bodyStrong, color: color.link },
   counter: {
     flex: 1,
     backgroundColor: color.surfaceSea,

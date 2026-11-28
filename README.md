@@ -58,6 +58,8 @@ Pravila su opisana u `docs/specifikacija.md`. Ovdje je kratki pregled gdje što 
 
 **Prava pristupa.** Ponudu, cijene i postavke mijenja samo vlasnik. Djelatnik bilježi prodaju i rezervacije, ali ne može čitati stupac s cijenom ni izvještaje. Vlasnik iznose vidi kroz `booking_amounts`, `report_daily` i `report_season`.
 
+**Radni dan i blagajna.** `bookings.paid_at` je trenutak naplate (prodaja: kad je upisana, rezervacija: kad je gost stigao, naknadni upis za prošli dan: dan najma). `workday_totals` daje promet dana po predmetu i načinu plaćanja: djelatnik samo za danas, vlasnik za bilo koji dan. `open_workday` otvara današnji radni dan, `close_workday` sprema očekivanu i izbrojenu gotovinu (tablica `workdays`).
+
 **Gužva.** `nearby_businesses` turistu vraća samo razinu (`no_data`, `empty`, `few`, `moderate`, `busy`, `full`). `business_popular_times` daje razinu po satu iz zadnja četiri tjedna (osvježava se noću), tek kad postoje dva tjedna podataka.
 
 **Privatnost.** Ime i telefon gosta brišu se 30 dana nakon datuma rezervacije (`purge_guest_data`, noću).
@@ -70,7 +72,7 @@ Demo prijave (lozinka `obala123`): `cabana@demo.local` vlasnik, `djelatnik@demo.
 |---|---|
 | Prijava | E-mail i lozinka, poveznica na e-mail, "Isprobaj bez registracije" (anonimna prijava + `create_demo_business`, plaža s cijelom prošlom sezonom) |
 | Čarobnjak | Tri koraka nakon registracije: objekt, lokacija (trenutna pozicija), prva ponuda |
-| Danas | Mreža mjesta po vrsti i dijelu dana. Dodir otvara list: prodano gotovina ili kartica (i na više dana), rezerviraj, gost je stigao, oslobodi, poništi. "Poništi" u obavijesti nekoliko sekundi. Dugi pritisak ili "Odaberi više mjesta" za obitelj. Satni najam (jet ski, pedaline) kao popis s odbrojavanjem i "Vraćeno". Vlasnik vidi prihod danas, djelatnik ne. Gumb sa suncem za jako sunce |
+| Danas | Mreža mjesta po vrsti i dijelu dana. Dodir otvara list: prodano gotovina ili kartica (i na više dana), rezerviraj, gost je stigao, oslobodi, poništi. "Poništi" u obavijesti nekoliko sekundi. Dugi pritisak ili "Odaberi više mjesta" za obitelj. Satni najam (jet ski, pedaline) kao popis s odbrojavanjem i "Vraćeno". Promet danas vide vlasnik i djelatnik; dodir otvara Radni dan (promet po načinu plaćanja i predmetu, zatvaranje dana s brojanjem gotovine). Gumb sa suncem za jako sunce |
 | Rezervacije | Danas i sljedećih 14 dana, po roku dolaska. Ime, mjesta, dio dana, rok, izvor, telefon (dodir zove). Nove iz turističke aplikacije imaju oznaku "Nova" i broj na kartici. List: gost je stigao (gotovina ili kartica), premjesti, otkaži, blokiraj broj (vlasnik) |
 | Predmeti | Padajući izbornik po skupinama s "Vlastiti naziv…", broj komada, oznaka, numeriranje, cijena, pregled oznaka s preimenovanjem prije spremanja. Uređivanje: cijena, broj komada (smanjenje samo deaktivira), preimenovanje, dijelovi dana (do sata ili do zalaska, cijena, može li se rezervirati), rezervacije (uključeno, tko bira mjesto, rok i razdoblje kao objekt ili posebno), uklanjanje |
 | Postavke | Profil objekta, lokacija, zahtjev za objavu na karti, rezervacije (uključene, rok dolaska, kada se otvaraju i zatvaraju, napomena za gosta; provjera da zatvaranje nije nakon roka), tim (pozivnica po e-mailu), odjava |
