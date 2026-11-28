@@ -1,116 +1,224 @@
 /**
- * Push obavijest za svaku novu rezervaciju iz turističke aplikacije (specifikacija 4.1 I3).
+ * Web push obavijest za svaku novu rezervaciju iz turističke aplikacije (specifikacija 4.1 I3).
  *
- * Mobitel se prijavi bazi sa svojim Expo tokenom za aktivni objekt. Baza na kraju svake
- * nove rezervacije pošalje obavijest svim prijavljenim mobitelima tog objekta.
+ * Bilježnica je web aplikacija. Preglednik se pretplati na obavijesti (service worker u
+ * public/sw.js) i pretplatu prijavi bazi za aktivni objekt. Baza na kraju svake nove
+ * rezervacije pošalje obavijest svim prijavljenim preglednicima tog objekta.
  * Dodir na obavijest otvara karticu Rezervacije.
+ *
+ * Dozvolu preglednik traži samo nakon dodira na gumb (Postavke, Obavijesti).
+ * Na iPhoneu obavijesti rade tek kad je aplikacija dodana na početni zaslon.
  */
 
-import Constants from "expo-constants";
-import * as Device from "expo-device";
-import * as Notifications from "expo-notifications";
 import { useRouter } from "expo-router";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Platform } from "react-native";
 import { useAuth } from "./auth";
 import { useBusiness } from "./business";
 import { supabase } from "./supabase";
 
-const supported = Platform.OS === "ios" || Platform.OS === "android";
+const VAPID_PUBLIC_KEY = process.env.EXPO_PUBLIC_VAPID_PUBLIC_KEY ?? "";
 
-if (supported) {
-  Notifications.setNotificationHandler({
-    handleNotification: async () => ({
-      shouldShowBanner: true,
-      shouldShowList: true,
-      shouldPlaySound: true,
-      shouldSetBadge: false,
-    }),
-  });
+export type PushState =
+  /** Preglednik ne podržava obavijesti ili ključ nije postavljen. */
+  | "unsupported"
+  /** iPhone/iPad: prvo dodaj na početni zaslon. */
+  | "install"
+  /** Korisnik je u pregledniku zabranio obavijesti. */
+  | "denied"
+  | "off"
+  | "on";
+
+function isIos(): boolean {
+  const ua = navigator.userAgent;
+  return /iPad|iPhone|iPod/.test(ua) || (ua.includes("Mac") && navigator.maxTouchPoints > 1);
 }
 
-function projectId(): string | undefined {
-  const extra = Constants.expoConfig?.extra as { eas?: { projectId?: string } } | undefined;
-  return extra?.eas?.projectId ?? Constants.easConfig?.projectId;
+function isStandalone(): boolean {
+  return (
+    window.matchMedia?.("(display-mode: standalone)").matches ||
+    (navigator as Navigator & { standalone?: boolean }).standalone === true
+  );
 }
 
-/** Traži dozvolu i vraća token, ili null ako obavijesti ovdje ne rade. */
-async function getToken(): Promise<string | null> {
-  if (!supported || !Device.isDevice) return null;
-  const id = projectId();
-  // Bez EAS projekta (lokalni razvoj) Expo ne izdaje token.
-  if (!id) return null;
-  if (Platform.OS === "android") {
-    await Notifications.setNotificationChannelAsync("rezervacije", {
-      name: "Rezervacije",
-      importance: Notifications.AndroidImportance.HIGH,
-      sound: "default",
-    });
+function baseState(): PushState {
+  if (Platform.OS !== "web" || typeof window === "undefined" || !VAPID_PUBLIC_KEY) {
+    return "unsupported";
   }
-  let perm = await Notifications.getPermissionsAsync();
-  if (!perm.granted && perm.canAskAgain) perm = await Notifications.requestPermissionsAsync();
-  if (!perm.granted) return null;
-  const token = await Notifications.getExpoPushTokenAsync({ projectId: id });
-  return token.data;
+  if (isIos() && !isStandalone()) return "install";
+  if (
+    !("serviceWorker" in navigator) ||
+    !("PushManager" in window) ||
+    !("Notification" in window)
+  ) {
+    return "unsupported";
+  }
+  if (Notification.permission === "denied") return "denied";
+  return "off";
 }
 
+function keyBytes(base64url: string): Uint8Array<ArrayBuffer> {
+  const pad = "=".repeat((4 - (base64url.length % 4)) % 4);
+  const raw = atob((base64url + pad).replace(/-/g, "+").replace(/_/g, "/"));
+  const out = new Uint8Array(new ArrayBuffer(raw.length));
+  for (let i = 0; i < raw.length; i++) out[i] = raw.charCodeAt(i);
+  return out;
+}
+
+async function registration(): Promise<ServiceWorkerRegistration> {
+  const existing = await navigator.serviceWorker.getRegistration("/");
+  if (existing) return existing;
+  await navigator.serviceWorker.register("/sw.js");
+  return navigator.serviceWorker.ready;
+}
+
+async function currentSubscription(): Promise<PushSubscription | null> {
+  const reg = await navigator.serviceWorker.getRegistration("/");
+  return reg ? reg.pushManager.getSubscription() : null;
+}
+
+async function saveSubscription(sub: PushSubscription, businessId: string) {
+  const json = sub.toJSON();
+  const { error } = await supabase.rpc("register_web_push", {
+    p_business_id: businessId,
+    p_endpoint: sub.endpoint,
+    p_p256dh: json.keys?.p256dh ?? "",
+    p_auth: json.keys?.auth ?? "",
+    p_user_agent: navigator.userAgent,
+  });
+  if (error) throw error;
+}
+
+/** Stanje i prekidač obavijesti za blok u Postavkama. */
+export function usePushSettings() {
+  const { isAnonymous } = useAuth();
+  const { active } = useBusiness();
+  const businessId = active?.business.id ?? null;
+  const isDemo = active?.business.is_demo ?? false;
+  const [state, setState] = useState<PushState>("unsupported");
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const refresh = useCallback(async () => {
+    const base = baseState();
+    if (base !== "off") {
+      setState(base);
+      return;
+    }
+    const sub = await currentSubscription().catch(() => null);
+    setState(sub && Notification.permission === "granted" ? "on" : "off");
+  }, []);
+
+  useEffect(() => {
+    void refresh();
+  }, [refresh]);
+
+  const enable = useCallback(async () => {
+    if (!businessId) return;
+    setBusy(true);
+    setError(null);
+    try {
+      const permission = await Notification.requestPermission();
+      if (permission !== "granted") {
+        setState(permission === "denied" ? "denied" : "off");
+        return;
+      }
+      const reg = await registration();
+      const sub =
+        (await reg.pushManager.getSubscription()) ??
+        (await reg.pushManager.subscribe({
+          userVisibleOnly: true,
+          applicationServerKey: keyBytes(VAPID_PUBLIC_KEY),
+        }));
+      await saveSubscription(sub, businessId);
+      setState("on");
+    } catch {
+      setError("Obavijesti se nisu uključile. Provjeri vezu i pokušaj ponovno.");
+    } finally {
+      setBusy(false);
+    }
+  }, [businessId]);
+
+  const disable = useCallback(async () => {
+    setBusy(true);
+    setError(null);
+    try {
+      const sub = await currentSubscription();
+      if (sub) {
+        await supabase.rpc("unregister_web_push", { p_endpoint: sub.endpoint });
+        await sub.unsubscribe();
+      }
+      setState("off");
+    } catch {
+      setError("Obavijesti se nisu isključile. Pokušaj ponovno.");
+    } finally {
+      setBusy(false);
+    }
+  }, []);
+
+  return {
+    state,
+    busy,
+    error,
+    enable,
+    disable,
+    /** Demo i račun bez registracije ne primaju obavijesti. */
+    available: !isAnonymous && !isDemo,
+  };
+}
+
+/**
+ * Pokreće se jednom dok je korisnik prijavljen:
+ * - ako su obavijesti već uključene, pretplatu veže uz aktivni objekt (promjena objekta);
+ * - dodir na obavijest prebaci na pravi objekt i otvori Rezervacije.
+ */
 export function usePushNotifications() {
   const router = useRouter();
   const { isAnonymous } = useAuth();
   const { active, memberships, setActive } = useBusiness();
   const businessId = active?.business.id ?? null;
   const isDemo = active?.business.is_demo ?? false;
-  const handled = useRef<string | null>(null);
 
-  // Prijava mobitela za aktivni objekt. Demo ne prima obavijesti.
   useEffect(() => {
-    if (!supported || !businessId || isAnonymous || isDemo) return;
-    let cancelled = false;
-    void (async () => {
-      try {
-        const token = await getToken();
-        if (!token || cancelled) return;
-        await supabase.rpc("register_push_token", {
-          p_token: token,
-          p_business_id: businessId,
-          p_platform: Platform.OS,
-        });
-      } catch {
-        // Obavijesti su dodatak: bez njih bilježnica i popis rezervacija rade normalno.
-      }
-    })();
-    return () => {
-      cancelled = true;
-    };
+    if (!businessId || isAnonymous || isDemo || baseState() !== "off") return;
+    if (Notification.permission !== "granted") return;
+    void currentSubscription()
+      .then((sub) => (sub ? saveSubscription(sub, businessId) : undefined))
+      .catch(() => undefined);
   }, [businessId, isAnonymous, isDemo]);
 
-  // Dodir na obavijest: prebaci na pravi objekt i otvori Rezervacije.
-  // Isto i kad je aplikacija bila zatvorena pa ju je otvorila obavijest.
   const ctx = useRef({ businessId, memberships, setActive, router });
   ctx.current = { businessId, memberships, setActive, router };
+  // Adresa iz obavijesti čeka dok se ne učitaju objekti korisnika.
+  const [pending, setPending] = useState<string | null>(null);
+
   useEffect(() => {
-    if (!supported) return;
-    const open = (response: Notifications.NotificationResponse | null) => {
-      if (!response) return;
-      const id = response.notification.request.identifier;
-      if (handled.current === id) return;
-      handled.current = id;
-      const c = ctx.current;
-      const data = response.notification.request.content.data as
-        | { business_id?: string }
-        | undefined;
-      const target = data?.business_id;
-      if (
-        target &&
-        target !== c.businessId &&
-        c.memberships.some((m) => m.business.id === target)
-      ) {
-        c.setActive(target);
-      }
-      c.router.navigate("/rezervacije");
+    if (!pending || memberships.length === 0) return;
+    setPending(null);
+    const c = ctx.current;
+    const id = new URL(pending, window.location.origin).searchParams.get("objekt");
+    if (id && id !== c.businessId && c.memberships.some((m) => m.business.id === id)) {
+      c.setActive(id);
+    }
+    c.router.navigate("/rezervacije");
+  }, [pending, memberships.length]);
+
+  useEffect(() => {
+    if (Platform.OS !== "web" || typeof window === "undefined") return;
+
+    // Aplikacija otvorena dodirom na obavijest: /rezervacije?objekt=...
+    if (new URLSearchParams(window.location.search).has("objekt")) {
+      setPending(window.location.href);
+      window.history.replaceState(null, "", window.location.pathname);
+    }
+
+    // Aplikacija je već bila otvorena: service worker javi kamo.
+    if (!("serviceWorker" in navigator)) return;
+    const onMessage = (e: MessageEvent) => {
+      const d = e.data as { type?: string; url?: string } | null;
+      if (d?.type === "open" && d.url) setPending(d.url);
     };
-    void Notifications.getLastNotificationResponseAsync().then(open);
-    const sub = Notifications.addNotificationResponseReceivedListener(open);
-    return () => sub.remove();
+    navigator.serviceWorker.addEventListener("message", onMessage);
+    return () => navigator.serviceWorker.removeEventListener("message", onMessage);
   }, []);
 }

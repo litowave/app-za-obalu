@@ -73,6 +73,8 @@ export function ReservationsProvider({ children }: { children: ReactNode }) {
   const [offline, setOffline] = useState(false);
   const [now, setNow] = useState(() => new Date());
   const loadSeq = useRef(0);
+  // Objekt za koji su stigli svježi podaci s poslužitelja.
+  const freshFor = useRef<string | null>(null);
 
   const load = useCallback(async () => {
     if (!businessId) return;
@@ -114,6 +116,7 @@ export function ReservationsProvider({ children }: { children: ReactNode }) {
       rows: (rows.data ?? []) as ReservationRow[],
     };
     setOffline(false);
+    freshFor.current = businessId;
     setSnap(next);
     setNow(new Date());
     setLoading(false);
@@ -123,8 +126,19 @@ export function ReservationsProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     setSnap(EMPTY);
     setLoading(true);
+    freshFor.current = null;
+    // Zadnje spremljeno odmah, bez čekanja mreže (bez signala zahtjevi se ponavljaju
+    // i nekoliko sekundi prije nego što odustanu).
+    if (businessId) {
+      void loadJson<Snapshot>(`lito.rez.${businessId}`).then((cached) => {
+        if (cached && freshFor.current !== businessId) {
+          setSnap(cached);
+          setLoading(false);
+        }
+      });
+    }
     void load();
-  }, [load]);
+  }, [load, businessId]);
 
   // Promjene uživo (nova rezervacija iz turističke aplikacije), povratak u aplikaciju
   // i osvježavanje svake minute, da istekle rezervacije nestanu same.

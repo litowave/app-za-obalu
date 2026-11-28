@@ -21,19 +21,17 @@
       "package": "hr.lito.obala.partner"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/favicon.png",
+      "output": "single",
+      "bundler": "metro",
+      "name": "Lito bilježnica",
+      "shortName": "Lito",
+      "lang": "hr",
+      "themeColor": "#FFFFFF",
+      "backgroundColor": "#FFFFFF"
     },
     "scheme": "obala-partner",
-    "plugins": [
-      "expo-router",
-      "expo-font",
-      [
-        "expo-notifications",
-        {
-          "color": "#1F5A55"
-        }
-      ]
-    ],
+    "plugins": ["expo-router", "expo-font"],
     "experiments": {
       "typedRoutes": true
     }

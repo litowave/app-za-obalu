@@ -566,9 +566,12 @@ export type Database = {
           business_id: string;
           created_at: string;
           data: NonNullable<Json>;
+          failed_count: number | null;
           group_id: string;
           id: number;
           request_id: number | null;
+          sent_at: string | null;
+          sent_count: number | null;
           title: string;
           tokens: string[];
         };
@@ -578,9 +581,12 @@ export type Database = {
           business_id: string;
           created_at?: string;
           data?: NonNullable<Json>;
+          failed_count?: number | null;
           group_id: string;
           id?: never;
           request_id?: number | null;
+          sent_at?: string | null;
+          sent_count?: number | null;
           title: string;
           tokens: string[];
         };
@@ -589,9 +595,12 @@ export type Database = {
           business_id?: string;
           created_at?: string;
           data?: NonNullable<Json>;
+          failed_count?: number | null;
           group_id?: string;
           id?: never;
           request_id?: number | null;
+          sent_at?: string | null;
+          sent_count?: number | null;
           title?: string;
           tokens?: string[];
         };
@@ -607,28 +616,37 @@ export type Database = {
       };
       push_tokens: {
         Row: {
+          auth: string | null;
           business_id: string;
           created_at: string;
           last_seen_at: string;
+          p256dh: string | null;
           platform: string;
           token: string;
+          user_agent: string | null;
           user_id: string;
         };
         ComputedFields: never;
         Insert: {
+          auth?: string | null;
           business_id: string;
           created_at?: string;
           last_seen_at?: string;
-          platform: string;
+          p256dh?: string | null;
+          platform?: string;
           token: string;
+          user_agent?: string | null;
           user_id?: string;
         };
         Update: {
+          auth?: string | null;
           business_id?: string;
           created_at?: string;
           last_seen_at?: string;
+          p256dh?: string | null;
           platform?: string;
           token?: string;
+          user_agent?: string | null;
           user_id?: string;
         };
         Relationships: [
@@ -1116,8 +1134,14 @@ export type Database = {
         }[];
       };
       refresh_popular_times: { Args: Record<PropertyKey, never>; Returns: number };
-      register_push_token: {
-        Args: { p_business_id: string; p_platform: string; p_token: string };
+      register_web_push: {
+        Args: {
+          p_auth: string;
+          p_business_id: string;
+          p_endpoint: string;
+          p_p256dh: string;
+          p_user_agent?: string;
+        };
         Returns: boolean;
       };
       release_booking: { Args: { p_booking_id: string }; Returns: undefined };
@@ -1196,7 +1220,9 @@ export type Database = {
         };
         Returns: string;
       };
+      unregister_web_push: { Args: { p_endpoint: string }; Returns: boolean };
       validate_booking_rules: { Args: { p_item_type_id: string }; Returns: undefined };
+      vault_secret: { Args: { p_name: string }; Returns: string };
       workday_totals: {
         Args: { p_business_id: string; p_date?: string };
         Returns: {

@@ -1,4 +1,4 @@
-This is an Expo/React Native mobile application. Prioritize mobile-first patterns, performance, and cross-platform compatibility.
+This is an Expo Router app that ships **only as a web app / PWA** (app.litowave.hr), not to the App Store or Google Play. Use react-native-web compatible APIs, keep it mobile-first and offline-capable (public/sw.js, lib/storage.ts). Native-only modules (expo-notifications, EAS builds) are not used; push goes through Web Push (lib/push.ts, supabase/functions/send-push).
 
 ## Expo has changed — do not trust your training data
 

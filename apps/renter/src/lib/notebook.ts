@@ -60,6 +60,8 @@ export function useNotebook(businessId: string | null, date: string) {
   const opsRef = useRef<OutboxOp[]>([]);
   const idMap = useRef(new Map<string, string>());
   const flushing = useRef(false);
+  // Za koji objekt i dan su stigli svježi podaci s poslužitelja.
+  const freshKey = useRef<string | null>(null);
   const outboxKey = businessId ? `lito.outbox.${businessId}` : null;
 
   const persistOps = useCallback(
@@ -114,6 +116,7 @@ export function useNotebook(businessId: string | null, date: string) {
       units: units.data ?? [],
       bookings: (bookings.data ?? []) as NotebookBooking[],
     };
+    freshKey.current = cacheKey;
     setSnap(next);
     setLoading(false);
     void saveJson(cacheKey, next);
@@ -169,6 +172,19 @@ export function useNotebook(businessId: string | null, date: string) {
     }
     if (changed) await load();
   }, [load, persistOps]);
+
+  // Zadnje spremljeno stanje odmah, bez čekanja mreže (bez signala zahtjevi se ponavljaju
+  // i nekoliko sekundi prije nego što odustanu).
+  useEffect(() => {
+    if (!businessId) return;
+    const cacheKey = `lito.nb.${businessId}.${date}`;
+    void loadJson<Snapshot>(cacheKey).then((cached) => {
+      if (cached && freshKey.current !== cacheKey) {
+        setSnap(cached);
+        setLoading(false);
+      }
+    });
+  }, [businessId, date]);
 
   // Učitaj red čekanja s uređaja pa podatke.
   useEffect(() => {

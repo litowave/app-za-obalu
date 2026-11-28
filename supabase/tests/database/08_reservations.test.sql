@@ -1,7 +1,7 @@
 -- Rezervacije u aplikaciji za iznajmljivače: nove, premještanje, push, blokiranje (faza 3).
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(14);
+select plan(16);
 
 insert into auth.users (id, email) values
   ('11111111-0000-0000-0000-000000000001', 'vlasnik@test.local'),
@@ -19,9 +19,11 @@ insert into public.item_types (id, business_id, name, reservable, price_cents, l
 select from public.add_units('d0000000-0000-0000-0000-000000000001', 4);
 select from public.add_units('d0000000-0000-0000-0000-000000000002', 2);
 
-insert into public.push_tokens (token, user_id, business_id, platform) values
-  ('ExponentPushToken[vlasnik]', '11111111-0000-0000-0000-000000000001', 'c0000000-0000-0000-0000-000000000001', 'ios'),
-  ('ExponentPushToken[djelatnik]', '22222222-0000-0000-0000-000000000002', 'c0000000-0000-0000-0000-000000000001', 'android');
+insert into public.push_tokens (token, user_id, business_id, p256dh, auth) values
+  ('https://push.example/vlasnik', '11111111-0000-0000-0000-000000000001', 'c0000000-0000-0000-0000-000000000001',
+   'BKlj0000000000000000000000000000', 'auth000000000000'),
+  ('https://push.example/djelatnik', '22222222-0000-0000-0000-000000000002', 'c0000000-0000-0000-0000-000000000001',
+   'BKlj0000000000000000000000000000', 'auth000000000000');
 
 -- Turist rezervira dva kompleta za sutra.
 set local role anon;
@@ -45,7 +47,7 @@ select ok(
 );
 select is(
   (select tokens from public.push_messages where business_id = 'c0000000-0000-0000-0000-000000000001'),
-  array['ExponentPushToken[djelatnik]', 'ExponentPushToken[vlasnik]'], 'stiže vlasniku i djelatniku'
+  array['https://push.example/djelatnik', 'https://push.example/vlasnik'], 'stiže vlasniku i djelatniku'
 );
 
 -- Rezervacija preko telefona ne šalje obavijest i nije "nova".
@@ -101,11 +103,19 @@ select is(public.block_booking_phone((select id from public.bookings where custo
   '38598111222', 'vlasnik blokira broj gosta');
 
 -- Prijava uređaja.
-select ok(public.register_push_token('ExponentPushToken[novi]', 'c0000000-0000-0000-0000-000000000001', 'ios'),
-  'član prijavljuje mobitel za obavijesti');
+select ok(public.register_web_push('c0000000-0000-0000-0000-000000000001', 'https://push.example/novi',
+    'BKlj0000000000000000000000000000', 'auth000000000000', 'test'),
+  'član prijavljuje preglednik za obavijesti');
+select throws_ok(
+  $$ select public.register_web_push('c0000000-0000-0000-0000-000000000001', 'http://push.example/x',
+       'BKlj0000000000000000000000000000', 'auth000000000000') $$,
+  'P0001', 'Neispravna pretplata', 'pretplata mora biti na https adresu'
+);
+select ok(public.unregister_web_push('https://push.example/novi'), 'član isključuje obavijesti na pregledniku');
 set local request.jwt.claims = '{"sub":"33333333-0000-0000-0000-000000000003","role":"authenticated"}';
 select throws_ok(
-  $$ select public.register_push_token('ExponentPushToken[tudji]', 'c0000000-0000-0000-0000-000000000001', 'ios') $$,
+  $$ select public.register_web_push('c0000000-0000-0000-0000-000000000001', 'https://push.example/tudji',
+       'BKlj0000000000000000000000000000', 'auth000000000000') $$,
   '42501', null, 'tko nije član ne prima obavijesti objekta'
 );
 

@@ -7,7 +7,7 @@ Radna verzija 0.2, 27. 11. 2026. Uneseni su tvoji odgovori na prvih deset pitanj
 Dva proizvoda nad istom bazom:
 
 1. **Turistički dio (web)**. Gost skenira QR kod u apartmanu, hotelu ili na naljepnici u mjestu i u pregledniku, bez instalacije i bez računa, vidi kartu ponude u blizini: ležaljke, komplete, cabane, jet ski, pedaline, kajake, SUP, trampoline, masaže na plaži, aquaparkove, škole ronjenja i automate za najam. Za svaki objekt vidi kolika je gužva sada i kada je obično najveća. Kod objekata koji to žele može rezervirati.
-2. **Aplikacija za iznajmljivače (mobitel i tablet) i web panel za vlasnike**. Aplikacija je radna digitalna bilježnica: popis predmeta s oznakama, dodirom se označi što je prodano ili rezervirano i kako je plaćeno. Iz toga se sami slažu izvještaji po danu, mjesecu i za cijelu sezonu, koje vlasnik gleda u aplikaciji ili na računalu.
+2. **Aplikacija za iznajmljivače (web aplikacija za mobitel, tablet i računalo)**. Aplikacija je radna digitalna bilježnica: popis predmeta s oznakama, dodirom se označi što je prodano ili rezervirano i kako je plaćeno. Iz toga se sami slažu izvještaji po danu, mjesecu i za cijelu sezonu, koje vlasnik gleda u aplikaciji ili na računalu.
 
 Plaćanja u aplikaciji nema. Gost plaća na licu mjesta, a aplikacija bilježi cijenu i način plaćanja (gotovina ili kartica) radi izvještaja.
 
@@ -124,7 +124,9 @@ Pri dodavanju ponude iznajmljivač bira gotov predložak, koji popuni naziv, na�
 
 ## 4. Aplikacija za iznajmljivače
 
-Expo (React Native), Android i iOS, mobitel i tablet. Mnogi rade s tableta na pultu, pa raspored mora dobro izgledati i u vodoravnom položaju.
+Web aplikacija na `app.litowave.hr` (odluka 28. 11. 2026.): ne ide u App Store ni Google Play. Kod je Expo Router s react-native-web, izvezen kao statična stranica. Iznajmljivač je otvori u pregledniku na mobitelu, tabletu ili računalu i doda na početni zaslon (Android: "Instaliraj aplikaciju", iPhone: Safari, Dijeli, "Dodaj na početni zaslon"); tada se otvara preko cijelog zaslona kao obična aplikacija. Mnogi rade s tableta na pultu, pa raspored mora dobro izgledati i u vodoravnom položaju.
+
+Nova verzija stiže sama: pri sljedećem otvaranju s vezom aplikacija učita novu verziju, bez ažuriranja u trgovini.
 
 ### 4.1 Ekrani
 
@@ -146,7 +148,8 @@ Expo (React Native), Android i iOS, mobitel i tablet. Mnogi rade s tableta na pu
 
 **I3. Rezervacije**
 - Popis za danas i sljedeće dane, poredan po roku dolaska.
-- Nove rezervacije iz turističke aplikacije označene su kao nove, a stiže i push obavijest.
+- Nove rezervacije iz turističke aplikacije označene su kao nove, a stiže i obavijest na uređaj (web push).
+- Obavijesti se uključuju za svaki uređaj posebno u Postavkama, dodirom na gumb (preglednik tek tada pita za dozvolu). Na Androidu i računalu rade u pregledniku; na iPhoneu i iPadu (iOS 16.4 i noviji) tek kad je aplikacija dodana na početni zaslon, što Postavke objasne. Dodir na obavijest otvara Rezervacije pravog objekta.
 - Uz svaku rezervaciju: ime, telefon (dodirom poziv), mjesta, rok, izvor (aplikacija, telefon, uživo).
 
 **I4. Ponuda** (vrste predmeta i jedinice)
@@ -170,6 +173,8 @@ Expo (React Native), Android i iOS, mobitel i tablet. Mnogi rade s tableta na pu
 ### 4.2 Rad bez signala
 
 Na plaži signal zna biti loš, a bilježnica koja tada ne radi je beskorisna. Označavanje u ekranu "Danas" mora raditi i bez veze: promjena se odmah vidi lokalno i šalje se čim veza proradi. Na vrhu se tada vidi "Bez veze, promjene će se poslati".
+
+Aplikacija se i otvara bez veze: nakon prvog otvaranja sama aplikacija (service worker) i zadnje stanje svakog objekta ostaju spremljeni na uređaju, pa se nakon gašenja mobitela na plaži bez signala odmah vidi zadnja poznata mreža mjesta i rezervacije. Red promjena čeka na uređaju dok se veza ne vrati.
 
 Ako se za vrijeme prekida ista jedinica rezervira preko turističke aplikacije, nakon sinkronizacije aplikacija iznajmljivaču pokazuje sukob i nudi drugo slobodno mjesto za rezervaciju. Baza nikad ne dopušta da ista jedinica bude dvaput zauzeta u isto vrijeme.
 
@@ -304,7 +309,7 @@ Osnova je dobra i specifikacija je ne ruši. Potrebne su dopune iz 7.2.
 - `qr_scans`: datum i kod, bez podataka o osobi
 - `platform_admins`: tko je administrator
 - `blocked_phones`: brojevi koje je objekt blokirao
-- `push_tokens`: uređaji iznajmljivača za obavijesti
+- `push_tokens`: pretplate preglednika za web push (adresa push servisa i ključevi za šifriranje), po objektu
 
 **Novi pogledi i funkcije**
 - `crowd_level`: pet razina iz 3.2 i "nema podataka"; turistu se vraća samo razina
@@ -388,6 +393,7 @@ Datumi su okvirni i ovise o tome koliko vremena imaš za pregled i testiranje.
 | Dijelovi dana | Podesivo po vrsti predmeta. Primošten Cabana: cijeli dan i 1. polovica (9 do 15 h) mogu se rezervirati, 2. polovica (15 h do zalaska) samo na licu mjesta. Ležaljke samo cijeli dan. |
 | POS | Kandidat za kasniju integraciju je Teya (već je koristiš). Nije dio prve verzije. |
 | Domena | `litowave.hr` i `litowave.com` već postoje; QR kodovi vode na `litowave.hr/q/{kod}`. |
+| Aplikacija za iznajmljivače | Web aplikacija na `app.litowave.hr` koja se dodaje na početni zaslon, bez App Storea i Google Playa. Obavijesti preko web pusha, rad bez signala ostaje (odluka 28. 11. 2026.). |
 | Poslovni model | Zimsko testiranje, zatim 100 € za sezonu, dugoročno integracija s POS-om. |
 
 ### 10.2 Ime i domena
